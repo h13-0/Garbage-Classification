@@ -72,6 +72,7 @@ class Detector(threading.Thread):
             time.sleep(0.02)
 
 
+    # 将Frame左右分割
     def getSplitedFrame(self):
         tempFrame = self.getFrame()
         tempFrame = cv.resize(tempFrame, (398, 299))

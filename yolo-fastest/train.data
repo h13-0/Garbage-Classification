@@ -1,0 +1,5 @@
+classes=7
+train = E:/TensorFlow/datasets/Garbage_YOLO_1.25/train.txt
+valid = E:/TensorFlow/datasets/Garbage_YOLO_1.25/valid.txt
+names = E:/TensorFlow/datasets/Garbage_YOLO_1.25/Garbage.names
+backup = E:/TensorFlow/DarkNet_YOLOv4/Yolo-Fastest/Garbage_COCO_1.25/backup
