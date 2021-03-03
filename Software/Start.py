@@ -33,7 +33,12 @@ videoPlayer = None
 
 def test():
     global videoPlayer
-    global detector
+    global detector, detectorLock, className
+
+    # 等待detector加载完毕
+    with detectorLock:
+        pass
+    
     
     time.sleep(3)
 
@@ -54,12 +59,12 @@ def test():
 
 def detectorInit():
     # 初始化Detector
-    global detector, detectorLock, className
+    global detector, detectorLock, className, ui
     with detectorLock:
         className = ['Battery','Brokenceramics','Cans','Cigarettebutts','Drug','Fruit','Paper','Tile','Vegetables','Walterbottles']
         detector = Detector(ui.frame_label, 0, "./weight/Result.hdf5", className)
 
-    # 初始化完毕后 锁住本线程
+    # 初始化完毕后 锁住本线程(即挂起)
     blocking = threading.Event()
     blocking.clear()
     blocking.wait()
@@ -67,13 +72,14 @@ def detectorInit():
 
 def main():
     # 初始化UI
+    global ui
     app = QApplication(sys.argv)
     Mainw = QMainWindow()
     ui = Ui_Main()
     ui.setupUi(Mainw)
     Mainw.show()
 
-    # 初始化Detector
+    # 创建一个新线程以初始化Detector
     global detector, detectorLock, className
     detectorLock = threading.Lock()
     detectorInitThread = threading.Thread(target=detectorInit)
