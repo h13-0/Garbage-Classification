@@ -16,13 +16,13 @@ imgType_list = {'.jpg','.bmp','.png','.jpeg'}
 class VideoPlayer(threading.Thread):
     def __init__(self,Qlabel):
         super(VideoPlayer, self).__init__()
-        self.Qlabel = Qlabel
+        self.__qlabel__ = Qlabel
 
         # 创建播放线程 但立即阻塞
-        self.__flag = threading.Event()
-        self.__flag.clear()    # 立即阻塞
+        self.__playerFlag__ = threading.Event()
+        self.__playerFlag__.clear()    # 立即阻塞
 
-        self.thread = threading.Thread(target=self.player)
+        self.thread = threading.Thread(target=self.__player__)
         self.thread.setDaemon(True)
         self.thread.start()
 
@@ -31,7 +31,7 @@ class VideoPlayer(threading.Thread):
         ## working: 正在工作, Qlabel正在被占用
         self.status = "notWorking"
 
-        self.cap = None
+        self.__cap__ = None
 
 
     # 循环播放视频
@@ -39,7 +39,7 @@ class VideoPlayer(threading.Thread):
         self.pause()
         time.sleep(0.1)
         self.mode = 'video'
-        self.file = file
+        self.__file__ = file
         
 
     # 循环播放文件夹下所有图片
@@ -62,7 +62,7 @@ class VideoPlayer(threading.Thread):
 
     # 从cv2的numpy转换到QPixmap的内部实现
     ## 自动缩放, 不拉伸
-    def loadImage(self,image):
+    def __loadImage__(self,image):
         image = cv.cvtColor(image, cv.COLOR_BGR2RGB)
         width = image.shape[1]
         height = image.shape[0]
@@ -78,8 +78,8 @@ class VideoPlayer(threading.Thread):
 
 
     # 播放器的内部实现
-    def player(self):
-        self.__flag.wait()
+    def __player__(self):
+        self.__playerFlag__.wait()
         while True:
             if(self.mode == 'picture'):
                 # Play from images
@@ -91,58 +91,58 @@ class VideoPlayer(threading.Thread):
                     if(image is None):
                         continue
 
-                    self.__flag.wait()
+                    self.__playerFlag__.wait()
 
-                    self.Qlabel.setPixmap(self.loadImage(image))
+                    self.__qlabel__.setPixmap(self.__loadImage__(image))
 
-                    time.sleep(self.delay)
+                    time.sleep(self.__delay__)
                 
 
             else:
                 # Play from Video
-                if(self.cap is None):
-                    self.cap = cv.VideoCapture(self.file)
-                    if(not self.cap.isOpened()):
-                        raise Exception("Could not open VideoCapture: " + str(self.file))
+                if(self.__cap__ is None):
+                    self.__cap__ = cv.VideoCapture(self.__file__)
+                    if(not self.__cap__.isOpened()):
+                        raise Exception("Could not open VideoCapture: " + str(self.__file__))
 
-                ret, frame = self.cap.read()
+                ret, frame = self.__cap__.read()
 
                 if(ret):
-                    self.__flag.wait()
+                    self.__playerFlag__.wait()
 
-                    self.Qlabel.setPixmap(self.loadImage(frame))
+                    self.__qlabel__.setPixmap(self.__loadImage__(frame))
                 else:
                     break
 
-                time.sleep(1 / self.cap.get(cv.CAP_PROP_FPS))
+                time.sleep(1 / self.__cap__.get(cv.CAP_PROP_FPS))
 
 
     # 开始播放
     def start(self, delay=1):
-        self.delay = delay
-        self.__flag.set()
+        self.__delay__ = delay
+        self.__playerFlag__.set()
         self.status = "working"
 
 
     # 暂停播放
     def pause(self):
         if(self.status == "working"):
-            self.__flag.clear()   # 设置为False, 让线程阻塞
+            self.__playerFlag__.clear()   # 设置为False, 让线程阻塞
             self.status = "notWorking"
 
 
     # 继续播放
     def resume(self):
         if(self.status == "notWorking"):
-            self.__flag.set()
+            self.__playerFlag__.set()
             self.status = "working"
 
 
     # 销毁对象
     ## 懒得测试 应该没有内存泄漏
     def __del__(self):
-        self.__flag.clear()
+        self.__playerFlag__.clear()
         time.sleep(0.1)
-        if(not self.cap == None):
-            self.cap.release()
+        if(not self.__cap__ == None):
+            self.__cap__.release()
         
