@@ -1,0 +1,64 @@
+/*
+@版本：2019-09-04:1.0
+@联系：minuy@qq.com
+只需要在每次串口中断中调用void Usart_Receive(unsigned char cha)函数，
+把收到的值传给这个函数就好，然后可以直接读出按键、摇杆和滑块的值
+*/
+#define LEN 8 //缓冲区长度，建议大于5
+unsigned char keyVal = 0;//按键的值，弹起不会变0（1-8）
+unsigned int rockerVal = 0;//摇杆的值，停下变0xff 0xff（0-360）
+unsigned char seekBarVal = 0;//滑块的值（0-100）
+
+void Rocker_Data_Analyze(unsigned char * str,unsigned char len)
+{
+        if(str[0] == 'y')//判断是不是指令数据
+        {
+                switch(str[1])
+                {
+                        case 'd'://摇杆数据
+                                rockerVal = str[2]+str[3];
+                                break;
+                        
+                        case 'b'://按键数据
+                                keyVal = str[2];
+                                break;
+                        
+                        case 'v'://滑块数据
+                                seekBarVal = str[2];
+                                break;
+                        
+                        default:break;
+                }
+        }
+}
+
+//串口接收函数，放在串口中断中，cha：串口每次收到的值
+void Usart_Receive(unsigned char cha)
+{
+        static unsigned char str[8];
+        static unsigned char sta = 0;//最高两位分别标志接收到0x0A和0x0D
+        if((sta&0x80)==0)//接收未完成
+        {
+                if(sta&0x40)//接收到了0x0A
+                {
+                        //if(cha!=0x0D)
+                        {
+                                sta=0;//接收错误,重新开始
+                        } else { 
+                                sta|=0x80;//接收完成
+                                sta<<=2;
+                                sta>>=2;
+                                Rocker_Data_Analyze(str,sta);
+                                sta = 0;
+                        }
+                } else {//还没收到0X0A
+                        if(cha==0x0A){
+                                sta|=0x40;
+                        } else {
+                                str[sta&0X3F] = cha;
+                                sta++;
+                                if(sta>(LEN-1))sta=0;//接收数据错误,重新开始接收	  
+                        }		 
+                }
+        }  
+}

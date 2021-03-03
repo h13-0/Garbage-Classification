@@ -1,0 +1,25 @@
+#include <PID.h>
+
+unsigned short incPIDcalc(PIDtypedef PIDx,double currentpoint)
+{
+	double Error = PIDx.setpoint - currentpoint;
+	
+	double Result;
+	
+	PIDx.sum_error = PIDx.sum_error + Error;
+	
+	Result = 
+	
+	PIDx.proportion * (Error) +                //P 比例运算
+	
+	PIDx.integral * PIDx.sum_error +           //I 积分运算
+	
+	PIDx.derivative * (Error - PIDx.error);    //D 微分运算
+
+	PIDx.error = Error;
+	
+	if(Result <= 65535)
+		return (unsigned short)Result;
+	else
+		return 65535;
+}
