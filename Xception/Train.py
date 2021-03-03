@@ -23,7 +23,7 @@ train_dir = Base_Dir + "Train"
 validation_dir = Base_Dir + "Valid"
 log_dir = "./log"
 ## 导入模型的图片大小, 没必要修改, 但是尽量和使用时设置的一致。
-Image_Shape = (150,150)
+Image_Shape = (299,299)
 batch_size = 2
 classes = 10
 epochs  = 250
@@ -67,7 +67,7 @@ val_data_gen = validation_image_generator.flow_from_directory(directory=validati
 total_val = val_data_gen.n
 
 # Build Model
-base_model = tf.keras.applications.Xception(weights="imagenet",include_top=False,input_shape=(150, 150, 3),pooling="avg")
+base_model = tf.keras.applications.Xception(weights="imagenet",include_top=False,input_shape=(299, 299, 3),pooling="avg")
 outputs = layers.Dense(classes, activation='softmax')(base_model.output)
 model = keras.Model(base_model.inputs, outputs)
 
