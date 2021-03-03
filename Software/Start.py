@@ -40,18 +40,13 @@ def test():
     videoPlayer.pause()
     print("switch")
 
-    time.sleep(0.1)
-    detector.show()
+    videoPlayer.fromFloder()
+    videoPlayer.start(3)
+
     time.sleep(10)
-    print("detect")
-    detector.calibrateBasePicture()
-    while True:
-        print(detector.hasObject())
-        time.sleep(0.1)
-    #detector.pause()
-    #videoPlayer.resume()
-    time.sleep(5)
-    #videoPlayer.destroy()
+    print("switch")
+    videoPlayer.fromVideo()
+    videoPlayer.start()
 
     while True:
         pass

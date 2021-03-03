@@ -11,15 +11,20 @@ import threading
 import time
 import os
 
-imgType_list = {'jpg','bmp','png','jpeg'}
+imgType_list = {'.jpg','.bmp','.png','.jpeg'}
 
 class VideoPlayer(threading.Thread):
     def __init__(self,Qlabel):
         super(VideoPlayer, self).__init__()
-        self.__flag = threading.Event()
-        self.__flag.set()    # 设置为True
-
         self.Qlabel = Qlabel
+
+        # 创建播放线程 但立即阻塞
+        self.__flag = threading.Event()
+        self.__flag.clear()    # 立即阻塞
+
+        self.thread = threading.Thread(target=self.player)
+        self.thread.setDaemon(True)
+        self.thread.start()
 
         # status:
         ## notWorking: 未在播放, Qlabel已经被释放
@@ -29,28 +34,34 @@ class VideoPlayer(threading.Thread):
         self.cap = None
 
 
+    # 循环播放视频
     def fromVideo(self,file = "./video.mp4"):
+        self.pause()
+        time.sleep(0.1)
         self.mode = 'video'
         self.file = file
         
 
+    # 循环播放文件夹下所有图片
     def fromFloder(self,floder = "./imgs"):
-        self.stop()
+        self.pause()
+        time.sleep(0.1)
         self.mode = 'picture'
         self.photoList = []
         self.numberOfPictures = 0
 
         # Read images from floders
+        ## ToDo: Rename files
         for files in os.listdir(floder):
             for imgtype in imgType_list:
-                if(files.endswith(imgtype) and os.path.isfile(files)):
-                    self.photoList += os.path.join(floder + files)
-                    numberOfPictures += 1
+                if(files.endswith(imgtype) and os.path.isfile(os.path.join(floder, files))):
+                    self.photoList.append(os.path.join(floder, files))
+                    self.numberOfPictures += 1
                     break
-        
-        # 
     
 
+    # 从cv2的numpy转换到QPixmap的内部实现
+    ## 自动缩放, 不拉伸
     def loadImage(self,image):
         image = cv.cvtColor(image, cv.COLOR_BGR2RGB)
         width = image.shape[1]
@@ -66,53 +77,72 @@ class VideoPlayer(threading.Thread):
         return QPixmap.fromImage(new_img)
 
 
+    # 播放器的内部实现
     def player(self):
-        if(self.mode == 'picture'):
-            # Play from images
-            while True:
-                pass
+        self.__flag.wait()
+        while True:
+            if(self.mode == 'picture'):
+                # Play from images
+                if(self.numberOfPictures < 1):
+                    raise Exception("No Image(s) in this floder.")
 
+                for img in self.photoList:
+                    image = cv.imread(img)
+                    if(image is None):
+                        continue
 
-        else:
-            while True:
-                # Play from Video
-                self.__flag.wait()
-                self.cap = cv.VideoCapture(self.file)
-                if(not self.cap.isOpened()):
-                    raise Exception("Could not open VideoCapture: " + str(self.file))
-            
-                while True:
-                    ret, frame = self.cap.read()
-                    if(ret):
-                        self.Qlabel.setPixmap(self.loadImage(frame))
-                        time.sleep(1 / self.cap.get(cv.CAP_PROP_FPS))
-                    else:
-                        break
                     self.__flag.wait()
 
+                    self.Qlabel.setPixmap(self.loadImage(image))
 
+                    time.sleep(self.delay)
+                
+
+            else:
+                # Play from Video
+                if(self.cap is None):
+                    self.cap = cv.VideoCapture(self.file)
+                    if(not self.cap.isOpened()):
+                        raise Exception("Could not open VideoCapture: " + str(self.file))
+
+                ret, frame = self.cap.read()
+
+                if(ret):
+                    self.__flag.wait()
+
+                    self.Qlabel.setPixmap(self.loadImage(frame))
+                else:
+                    break
+
+                time.sleep(1 / self.cap.get(cv.CAP_PROP_FPS))
+
+
+    # 开始播放
     def start(self, delay=1):
-        self.thread = threading.Thread(target=self.player)
-        self.thread.setDaemon(True)
-        self.thread.start()
+        self.delay = delay
+        self.__flag.set()
         self.status = "working"
 
 
+    # 暂停播放
     def pause(self):
         if(self.status == "working"):
             self.__flag.clear()   # 设置为False, 让线程阻塞
             self.status = "notWorking"
 
 
+    # 继续播放
     def resume(self):
         if(self.status == "notWorking"):
             self.__flag.set()
             self.status = "working"
 
 
-    # 更换播放源时使用
-    def destroy(self):
+    # 销毁对象
+    ## 懒得测试 应该没有内存泄漏
+    def __del__(self):
         self.__flag.clear()
         time.sleep(0.1)
         if(not self.cap == None):
             self.cap.release()
+        

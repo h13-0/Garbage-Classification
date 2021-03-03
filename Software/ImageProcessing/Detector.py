@@ -116,4 +116,9 @@ class Detector(threading.Thread):
         
     # 预测种类
     def predict(self):
-        pass
+        imgList = self.getSplitedFrame()
+        imgs = np.array(imgList)
+
+        predictions = self.model.predict(imgs)
+
+        print(predictions)
