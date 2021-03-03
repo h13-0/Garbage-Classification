@@ -24,12 +24,12 @@ validation_dir = Base_Dir + "Valid"
 log_dir = "./log"
 ## 导入模型的图片大小, 没必要修改, 但是尽量和使用时设置的一致。
 Image_Shape = (299,299)
-batch_size = 2
+batch_size = 4
 classes = 10
-epochs  = 250
+epochs  = 25
 save_dir='./weights'
 filepath="epoch-{epoch:02d}-val_acc-{val_accuracy:.4f}-acc_top3-{acc_top3:.4f}-acc_top5-{acc_top5:.4f}.hdf5"
-learning_rate = 0.0001 #0.0005 #0.000003
+learning_rate = 0.0005 #0.0005
 
 physical_devices = tf.config.experimental.list_physical_devices('GPU')
 for physical_device in physical_devices:
