@@ -38,11 +38,16 @@ def test():
     time.sleep(3)
 
     videoPlayer.pause()
-    print("pause")
+    print("switch")
 
     time.sleep(0.1)
     detector.show()
     time.sleep(10)
+    print("detect")
+    detector.calibrateBasePicture()
+    while True:
+        print(detector.hasObject())
+        time.sleep(0.1)
     #detector.pause()
     #videoPlayer.resume()
     time.sleep(5)
@@ -60,16 +65,16 @@ def main():
     ui.setupUi(Mainw)
     Mainw.show()
 
+    # 初始化Detector
+    global detector
+    className = ['Battery','Brokenceramics','Cans','Cigarettebutts','Drug','Fruit','Paper','Tile','Vegetables','Walterbottles']
+    detector = Detector(ui.frame_label, 0, "./weight/Result.hdf5", className)
+
     # 设置当前垃圾容量
     ui.processbar_harmful.parameterUpdate(30)
     ui.processbar_other.parameterUpdate(40)
     ui.processbar_recycle.parameterUpdate(50)
     ui.processbar_kitchen.parameterUpdate(50)
-
-    # 初始化Detector
-    global detector
-    className = ['Battery','Brokenceramics','Cans','Cigarettebutts','Drug','Fruit','Paper','Tile','Vegetables','Walterbottles']
-    detector = Detector(ui.frame_label, 0, "./weight/Result.hdf5", className)
 
     # 开始播放视频
     global videoPlayer

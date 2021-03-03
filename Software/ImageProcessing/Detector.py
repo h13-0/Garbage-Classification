@@ -38,12 +38,10 @@ class Detector(threading.Thread):
         # Build Model
         self.model = tf.keras.applications.Xception(include_top=True,weights=weigthFile,input_shape=(299,299,3),classes=len(className),pooling="avg")
 
-        # 跳过若干帧
-        for i in range(10):
-            self.getFrame()
-
         # 获取空图像直方图做原始图像直方图
-        self.originalHist = cv.calcHist([self.getFrame()], [0], None, [256], [0, 255])
+        self.originalLeftHist = None
+        self.originalRightHist = None
+        self.originalHistLock = threading.Lock()
 
 
     # 获取单帧图像
@@ -63,24 +61,58 @@ class Detector(threading.Thread):
         self.__displayFlag.clear()
 
 
+    # 私有方法, 显示图像用
     def display(self):
         while True:
             self.__displayFlag.wait()
             image = self.getFrame()
+            image = cv.cvtColor(image, cv.COLOR_BGR2RGB)
             qImage = QImage(image.data, 640, 480, 640 * 3, QImage.Format_RGB888)
             self.Qlabel.setPixmap(QPixmap.fromImage(qImage))
+            time.sleep(0.02)
 
 
-    # 检测垃圾是否被放置
-    def hasObject(self):
+    def getSplitedFrame(self):
         tempFrame = self.getFrame()
+        tempFrame = cv.resize(tempFrame, (398, 299))
 
         # 黑色底图
         leftFrame = np.zeros((299, 299, 3), dtype= np.uint8)
         rightFrame = np.zeros((299, 299, 3), dtype= np.uint8)
 
         # 将tempFrame左右分别拷贝到leftFrame和rightFrame的中间
+        np.copyto(leftFrame[0:299, 49:248], tempFrame[0:299, 0:199])
+        np.copyto(rightFrame[0:299, 49:248], tempFrame[0:299, 199:398])
+
+        return leftFrame, rightFrame
+
+
+    # 校准基准图片, 需要在检测放置之前被调用.
+    # 可以重复调用(建议)
+    def calibrateBasePicture(self):
+        with self.originalHistLock:
+            left, right = self.getSplitedFrame()
+            self.originalLeftHist = cv.calcHist([left], [0], None, [256], [0, 255])
+            self.originalRightHist = cv.calcHist([right], [0], None, [256], [0, 255])
+
+
+    # 检测垃圾是否被放置
+    def hasObject(self):
+        left, right = self.getSplitedFrame()
+        leftHist = cv.calcHist([left], [0], None, [256], [0, 255])
+        rightHist = cv.calcHist([right], [0], None, [256], [0, 255])
+
+        # 开始检测
+        with self.originalHistLock:
+            if(self.originalLeftHist is None):
+                raise Exception("Please Calibrate Base Picture before detect.")
+
+            leftDiff = cv.compareHist(leftHist, self.originalLeftHist, cv.HISTCMP_BHATTACHARYYA)
+            rightDiff = cv.compareHist(rightHist, self.originalRightHist, cv.HISTCMP_CHISQR)
+
+        return leftDiff, rightDiff
+
         
-    
+    # 预测种类
     def predict(self):
         pass
