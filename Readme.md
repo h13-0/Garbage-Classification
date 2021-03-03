@@ -15,7 +15,13 @@ python ./Live.py
 ## yolo-fastest实现
 由于RK3399, Jetson Nano等廉价Linux开发板算力较弱无法流畅运行yolov4, 外加yolov4训练对电脑需求过高, 故本项目不再使用yolov4实现。  
 本项目使用了基于华为垃圾分类竞赛数据集基础上的拓展数据集 (读起来真拗口。。)  
-源dataset: https://aistudio.baidu.com/aistudio/datasetdetail/70610  
+
+本项目使用的源dataset (VOC格式): https://aistudio.baidu.com/aistudio/datasetdetail/70610  
+本项目使用的源dataset (图像分类格式): 
+
+我根据比赛要求改进的dataset:  
+[Classification](./dataset/Classification)  
+[yolo-mark](./dataset/yolo-mark)
 
 需要配置[Darknet](https://github.com/AlexeyAB/darknet)环境。  
 
