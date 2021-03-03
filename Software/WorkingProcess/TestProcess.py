@@ -12,8 +12,6 @@ from ImageProcessing.Detector import Detector
 
 ## Hardware
 
-
-
 def test():
     global videoPlayer
     global detector, detectorLock, className
@@ -22,22 +20,29 @@ def test():
     with detectorLock:
         pass
     
-    
-    time.sleep(3)
-
-    videoPlayer.pause()
-    print("switch")
-
-    videoPlayer.fromFloder()
-    videoPlayer.start(3)
-
-    time.sleep(10)
-    print("switch")
-    videoPlayer.fromVideo()
-    videoPlayer.start()
-
     while True:
-        pass
+        
+        time.sleep(10)
+
+        print("Switch To Images Player")
+
+        videoPlayer.fromFloder()
+        videoPlayer.start(3)
+
+        time.sleep(10)
+
+        print("Switch To Detector")
+
+        videoPlayer.pause()
+        detector.show()
+
+        time.sleep(10)
+
+        print("Switch To Video Player")
+
+        detector.pause()
+        videoPlayer.fromVideo()
+
 
 
 def detectorInit():
