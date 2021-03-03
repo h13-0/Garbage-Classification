@@ -52,6 +52,19 @@ def test():
         pass
 
 
+def detectorInit():
+    # 初始化Detector
+    global detector, detectorLock, className
+    with detectorLock:
+        className = ['Battery','Brokenceramics','Cans','Cigarettebutts','Drug','Fruit','Paper','Tile','Vegetables','Walterbottles']
+        detector = Detector(ui.frame_label, 0, "./weight/Result.hdf5", className)
+
+    # 初始化完毕后 锁住本线程
+    blocking = threading.Event()
+    blocking.clear()
+    blocking.wait()
+
+
 def main():
     # 初始化UI
     app = QApplication(sys.argv)
@@ -61,9 +74,11 @@ def main():
     Mainw.show()
 
     # 初始化Detector
-    global detector
-    className = ['Battery','Brokenceramics','Cans','Cigarettebutts','Drug','Fruit','Paper','Tile','Vegetables','Walterbottles']
-    detector = Detector(ui.frame_label, 0, "./weight/Result.hdf5", className)
+    global detector, detectorLock, className
+    detectorLock = threading.Lock()
+    detectorInitThread = threading.Thread(target=detectorInit)
+    detectorInitThread.setDaemon(True)
+    detectorInitThread.start()
 
     # 设置当前垃圾容量
     ui.processbar_harmful.parameterUpdate(30)
