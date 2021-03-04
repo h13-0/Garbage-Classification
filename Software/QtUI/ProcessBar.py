@@ -47,10 +47,10 @@ class RoundProgress(QWidget):
         painter.setPen(QtCore.Qt.NoPen)
 
         painter.setBrush(QBrush(QColor("#cccccc")))
-        painter.drawEllipse(3, 3, 100, 100)  # 画外圆
+        painter.drawEllipse(3, 3, 120, 120)  # 画外圆
 
         painter.setBrush(QBrush(QColor("#FFFFFF")))
-        painter.drawEllipse(13, 13, 80, 80)  # 画内圆
+        painter.drawEllipse(17, 17, 92, 92)  # 画内圆
         if self.persent>=0 and self.persent<=50:
             color = "#20a53a"
         elif self.persent>50 and self.persent<=80:
@@ -59,15 +59,15 @@ class RoundProgress(QWidget):
             color = "#FF0033"
         self.pen = QPen()
         self.pen.setBrush(QBrush(QColor(color)))  # 设置画刷渐变效果
-        self.pen.setWidth(10)
+        self.pen.setWidth(14)
         self.pen.setCapStyle(Qt.RoundCap)
         painter.setPen(self.pen)
-        painter.drawArc(QtCore.QRectF(8,8 , 90, 90), (90 - 0) * 16, -rotateAngle * 16)  # 画圆环
+        painter.drawArc(QtCore.QRectF(10,10 , 106, 106), (90 - 0) * 16, -rotateAngle * 16)  # 画圆环
 
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         font.setPointSize(11)
         painter.setFont(font)
         painter.setPen(QColor("#5481FF"))
-        painter.drawText(QtCore.QRectF(4, 4, 98, 98), Qt.AlignCenter, "%d%%" % self.persent)  # 显示进度条当前进度
+        painter.drawText(QtCore.QRectF(6, 6, 122, 110), Qt.AlignCenter, "%d%%" % self.persent)  # 显示进度条当前进度
 

@@ -144,3 +144,8 @@ class Detector(threading.Thread):
         predictions = self.__model__.predict(imgs)
 
         print(predictions)
+
+    
+    # 录入新的物体(模板匹配)
+    def newObject(self):
+        pass

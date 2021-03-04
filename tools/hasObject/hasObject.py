@@ -33,9 +33,37 @@ while True:
     output = blank.copy()
     for contour in contours:
         if(cv.contourArea(contour) > 10):
-            output = cv.drawContours(blank, [contour], -1, (255, 255, 255), 2)
+            cv.drawContours(output, [contour], -1, (255, 255, 255), 2)
     
     cv.imshow("findContours", output)
 
+    ## newObject
+    maxId = -1
+    maxArea = 0
+    maxContour = None
+
+    currentId = 0
+    for contour in contours:
+        area = cv.contourArea(contour)
+        if(area > maxArea):
+            maxArea = area
+            maxId = currentId
+            maxContour = contour
+        currentId += 1
+
+    max = blank.copy()
+    cv.drawContours(max, contours, maxId, (255, 255, 255), 2)
+    print(maxId)
+
+    cv.imshow("max", max)
+
+    ## draw
+    x, y, w, h = cv.boundingRect(maxContour)
+    drawed = cv.rectangle(src,(x,y),(x+w,y+h),(0,255,0),2)
+    cv.imshow("draw", drawed)
+
+    ## Cut
+    if((w > 0) and (h > 0)):
+        cv.imshow("cut",src[y:y+h,x:x+w])
 
     cv.waitKey(10)

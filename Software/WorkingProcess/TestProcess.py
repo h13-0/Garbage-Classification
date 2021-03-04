@@ -57,6 +57,11 @@ def test():
         time.sleep(0.1)
         '''
     
+    # predict
+    while True:
+        #detector
+        time.sleep(0.1)
+
     # end
     while True:
         pass
