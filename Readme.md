@@ -1,18 +1,24 @@
 # 一个基于Xception图像识别的垃圾分类项目
 
-## Xception
-### 模型训练
+## 图像识别部分
+### Xception 图像分类实现
+#### 模型训练
 
-### 模型校验
+#### 模型校验
 
-### 实时监测
+#### 实时监测
 ```
 cd Xception
 python ./Live.py
 ```
+至此, Xception图像分类部分完毕。但是仍然无法进行实际的图像识别流程, 原因如下文 `Xception具体操作流程`。
+
+### Xception具体操作流程
+由于图像分类无法对未知物体或无物体时的结果进行正确预测, 所以需要进行一些预处理。
 
 
-## yolo-fastest实现
+
+### yolo-fastest 图像识别实现
 由于RK3399, Jetson Nano等廉价Linux开发板算力较弱无法流畅运行yolov4, 外加yolov4训练对电脑需求过高, 故本项目不再使用yolov4实现。  
 本项目使用了基于华为垃圾分类竞赛数据集基础上的拓展数据集 (读起来真拗口。。)  
 
@@ -38,5 +44,9 @@ darknet detector demo .\train.data .\yolo-fastest.cfg .\backup\yolo-fastest_best
 ```
 ![](./yolo-fastest/test.png)
 
-但是实测效果一般, 故比赛中又改为了 Xception
+但是实测效果一般, 故比赛中又改为了 Xception。
 
+## STM32端具体实现
+
+## 机械结构及设计思路
+暂未整理

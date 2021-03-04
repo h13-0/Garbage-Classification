@@ -20,6 +20,8 @@ def test():
     with detectorLock:
         pass
     
+    # Switch Test
+    '''
     while True:
         
         time.sleep(10)
@@ -42,6 +44,23 @@ def test():
 
         detector.pause()
         videoPlayer.fromVideo()
+        '''
+
+    
+    # hasObjectTest
+    '''
+    videoPlayer.pause()
+    detector.show()
+    
+    while True:
+        print(detector.hasObject())
+        time.sleep(0.1)
+        '''
+    
+    # end
+    while True:
+        pass
+        
 
 
 

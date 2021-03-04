@@ -36,12 +36,10 @@ class Detector(threading.Thread):
         self.__displayThread__.start()
 
         # Build Model
+        physical_devices = tf.config.experimental.list_physical_devices('GPU')
+        for physical_device in physical_devices:
+            tf.config.experimental.set_memory_growth(physical_device, True)
         self.__model__ = tf.keras.applications.Xception(include_top=True,weights=weigthFile,input_shape=(299,299,3),classes=len(className),pooling="avg")
-
-        # 获取空图像直方图做原始图像直方图
-        self.__originalLeftHist__ = None
-        self.__originalRightHist__ = None
-        self.__originalHistLock__ = threading.Lock()
 
 
     # 获取单帧图像
@@ -73,45 +71,69 @@ class Detector(threading.Thread):
 
 
     # 将Frame左右分割
-    def getSplitedFrame(self):
-        tempFrame = self.getFrame()
-        tempFrame = cv.resize(tempFrame, (398, 299))
+    ## 可选数据源
+    def getSplitedFrame(self, frame = None):
+        if frame is None:
+            frame = self.getFrame()
 
-        # 黑色底图
-        leftFrame = np.zeros((299, 299, 3), dtype= np.uint8)
-        rightFrame = np.zeros((299, 299, 3), dtype= np.uint8)
+        frame = cv.resize(frame, (398, 299))
 
-        # 将tempFrame左右分别拷贝到leftFrame和rightFrame的中间
-        np.copyto(leftFrame[0:299, 49:248], tempFrame[0:299, 0:199])
-        np.copyto(rightFrame[0:299, 49:248], tempFrame[0:299, 199:398])
+        if(frame.ndim == 2):
+            # 单通道图
+            # 黑色底图
+            leftFrame = np.zeros((299, 299), dtype= np.uint8)
+            rightFrame = np.zeros((299, 299), dtype= np.uint8)
+
+            # 将frame左右分别拷贝到leftFrame和rightFrame的中间
+            np.copyto(leftFrame[0:299, 49:248], frame[0:299, 0:199])
+            np.copyto(rightFrame[0:299, 49:248], frame[0:299, 199:398])
+
+        else:
+            # 三通道
+            # 黑色底图
+            leftFrame = np.zeros((299, 299, 3), dtype= np.uint8)
+            rightFrame = np.zeros((299, 299, 3), dtype= np.uint8)
+
+            # 将frame左右分别拷贝到leftFrame和rightFrame的中间
+            np.copyto(leftFrame[0:299, 49:248], frame[0:299, 0:199])
+            np.copyto(rightFrame[0:299, 49:248], frame[0:299, 199:398])
 
         return leftFrame, rightFrame
 
 
-    # 校准基准图片, 需要在检测放置之前被调用.
-    # 可以重复调用(建议)
-    def calibrateBasePicture(self):
-        with self.__originalHistLock__:
-            left, right = self.getSplitedFrame()
-            self.__originalLeftHist__ = cv.calcHist([left], [0], None, [256], [0, 255])
-            self.__originalRightHist__ = cv.calcHist([right], [0], None, [256], [0, 255])
-
-
     # 检测垃圾是否被放置
     def hasObject(self):
-        left, right = self.getSplitedFrame()
-        leftHist = cv.calcHist([left], [0], None, [256], [0, 255])
-        rightHist = cv.calcHist([right], [0], None, [256], [0, 255])
+        # threshold
+        ret, thre = cv.threshold(self.getFrame(), 100, 255, cv.THRESH_TOZERO)
 
-        # 开始检测
-        with self.__originalHistLock__:
-            if(self.__originalLeftHist__ is None):
-                raise Exception("Please Calibrate Base Picture before detect.")
+        # erode
+        kernel = np.ones((5,5),np.uint8) 
+        erosion = cv.erode(thre, kernel, iterations = 1)
 
-            leftDiff = cv.compareHist(leftHist, self.__originalLeftHist__, cv.HISTCMP_BHATTACHARYYA)
-            rightDiff = cv.compareHist(rightHist, self.__originalRightHist__, cv.HISTCMP_CHISQR)
+        # BGR To Gray
+        gray = cv.cvtColor(erosion, cv.COLOR_BGR2GRAY)
 
-        return leftDiff, rightDiff
+        # Split image
+        left, right = self.getSplitedFrame(gray)
+        
+        # findContours
+        leftContours, leftHierarchy = cv.findContours(left, cv.RETR_TREE, cv.CHAIN_APPROX_NONE)
+        rightContours, rightHierarchy = cv.findContours(right, cv.RETR_TREE, cv.CHAIN_APPROX_NONE)
+
+        # output maximum area
+        leftArea = 0
+        for contour in leftContours:
+            area = cv.contourArea(contour)
+            if(area > leftArea):
+                leftArea = area
+        
+        rightArea = 0
+        for contour in rightContours:
+            area = cv.contourArea(contour)
+            if(area > rightArea):
+                rightArea = area
+
+        return leftArea, rightArea
 
         
     # 预测种类
