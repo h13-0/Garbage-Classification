@@ -32,39 +32,103 @@ class VideoPlayer(threading.Thread):
         ## working: 正在工作, Qlabel正在被占用
         self.status = "notWorking"
 
+        # mode:
+        ## picture: 循环播放图片
+        ## video: 循环播放视频
+        ## takeTurns: 循环播放图片和视频
+        self.mode = None
+
         self.__cap__ = None
 
 
     # 循环播放视频
     def fromVideo(self, file = "./video.mp4"):
-        self.pause()
-        time.sleep(0.1)
-        self.mode = 'video'
-        self.__file__ = file
+        if(self.status == "working"):
+            self.pause()
+            time.sleep(0.1)
+            self.mode = 'video'
+            self.__file__ = file
+            self.start()
+
+        else:
+            self.pause()
+            time.sleep(0.1)
+            self.mode = 'video'
+            self.__file__ = file
         
 
     # 循环播放文件夹下所有图片
     def fromFloder(self, floder = "./imgs"):
-        self.pause()
-        time.sleep(0.1)
-        self.mode = 'picture'
-        self.photoList = []
-        self.numberOfPictures = 0
+        if(self.status == "working"):
+            self.pause()
+            time.sleep(0.1)
+            self.mode = 'picture'
+            
+            self.photoList = []
+            self.numberOfPictures = 0
 
-        # Read images from floders
-        ## ToDo: Rename files
-        for files in os.listdir(floder):
-            for imgtype in imgType_list:
-                if(files.endswith(imgtype) and os.path.isfile(os.path.join(floder, files))):
-                    self.photoList.append(os.path.join(floder, files))
-                    self.numberOfPictures += 1
-                    break
+            # Read images from floders
+            ## ToDo: Rename files
+            for files in os.listdir(floder):
+                for imgtype in imgType_list:
+                    if(files.endswith(imgtype) and os.path.isfile(os.path.join(floder, files))):
+                        self.photoList.append(os.path.join(floder, files))
+                        self.numberOfPictures += 1
+                        break
+            
+            self.start()
+
+        else:
+            self.mode = 'picture'
+            self.photoList = []
+            self.numberOfPictures = 0
+
+            # Read images from floders
+            ## ToDo: Rename files
+            for files in os.listdir(floder):
+                for imgtype in imgType_list:
+                    if(files.endswith(imgtype) and os.path.isfile(os.path.join(floder, files))):
+                        self.photoList.append(os.path.join(floder, files))
+                        self.numberOfPictures += 1
+                        break
     
 
     # 视频图片轮流播放
     def takeTurns(self, file = "./video.mp4", floder = "./imgs"):
-        self.__file__ = file
+        if(self.status == "working"):
+            self.pause()
+            time.sleep(0.1)
+            self.mode = "takeTurns"
+            self.__file__ = file
 
+            self.photoList = []
+            self.numberOfPictures = 0
+
+            # Read images from floders
+            ## ToDo: Rename files
+            for files in os.listdir(floder):
+                for imgtype in imgType_list:
+                    if(files.endswith(imgtype) and os.path.isfile(os.path.join(floder, files))):
+                        self.photoList.append(os.path.join(floder, files))
+                        self.numberOfPictures += 1
+                        break
+
+            self.start()
+            
+        else:
+            self.mode = "takeTurns"
+            self.__file__ = file
+            self.photoList = []
+            self.numberOfPictures = 0
+
+            # Read images from floders
+            ## ToDo: Rename files
+            for files in os.listdir(floder):
+                for imgtype in imgType_list:
+                    if(files.endswith(imgtype) and os.path.isfile(os.path.join(floder, files))):
+                        self.photoList.append(os.path.join(floder, files))
+                        self.numberOfPictures += 1
+                        break
 
 
     # 从cv2的numpy转换到QPixmap的内部实现
@@ -101,11 +165,13 @@ class VideoPlayer(threading.Thread):
                     self.__playerFlag__.wait()
 
                     self.__qlabel__.setPixmap(self.__loadImage__(image))
+                    if(not self.mode == 'picture'):
+                        break
 
                     time.sleep(self.__delay__)
                 
 
-            else:
+            elif(self.mode == 'video'):
                 # Play from Video
                 if(self.__cap__ is None):
                     self.__cap__ = cv.VideoCapture(self.__file__)
@@ -123,9 +189,43 @@ class VideoPlayer(threading.Thread):
 
                 time.sleep(1 / self.__cap__.get(cv.CAP_PROP_FPS))
 
+            elif(self.mode == 'takeTurns'):
+                # TakeTurns
+                if(self.__cap__ is None):
+                    self.__cap__ = cv.VideoCapture(self.__file__)
+                    if(not self.__cap__.isOpened()):
+                        raise Exception("Could not open VideoCapture: " + str(self.__file__))
+
+                ret = True
+                ret, frame = self.__cap__.read()
+
+                if(ret):
+                    self.__playerFlag__.wait()
+
+                    self.__qlabel__.setPixmap(self.__loadImage__(frame))
+                    
+                    time.sleep(1 / self.__cap__.get(cv.CAP_PROP_FPS))
+                else:
+                    if(self.numberOfPictures < 1):
+                        raise Exception("No Image(s) in this floder.")
+
+                    for img in self.photoList:
+                        image = cv.imread(img)
+                        if(image is None):
+                            continue
+
+                        self.__playerFlag__.wait()
+
+                        self.__qlabel__.setPixmap(self.__loadImage__(image))
+
+                        if(not self.mode == 'takeTurns'):
+                            break
+
+                        time.sleep(self.__delay__)
+
 
     # 开始播放
-    def start(self, delay=1):
+    def start(self, delay=1.5):
         self.__delay__ = delay
         self.__playerFlag__.set()
         self.status = "working"

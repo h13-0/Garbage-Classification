@@ -44,9 +44,9 @@ class Process(QWidget):
         # 初始化垃圾桶信息区域
         self.__garbageMessage__ = GarbageMessage(self.__ui__)
 
-        # 开始播放视频
+        # 开始轮流播放
         self.__videoPlayer__ = VideoPlayer(self.__ui__.frame_label)
-        self.__videoPlayer__.fromVideo()
+        self.__videoPlayer__.takeTurns()
         self.__videoPlayer__.start()
 
         # 创建子线程
