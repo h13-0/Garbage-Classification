@@ -4,8 +4,8 @@ import math
 import time
 
 from PyQt5 import QtCore, QtGui
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QPainter, QBrush, QColor, QPen
 from PyQt5.QtWidgets import QApplication, QWidget
 
 lock = threading.Lock()
@@ -13,8 +13,6 @@ class RoundProgress(QWidget):
 
     def __init__(self):
         super(RoundProgress, self).__init__()
-        self.setWindowFlags(Qt.FramelessWindowHint)  # 去边框
-        self.setAttribute(Qt.WA_TranslucentBackground)  # 设置窗口背景透明
         self.persent = 0
         self.color = "#20a53a"
         # self.t = Thread_Updata()
@@ -31,11 +29,13 @@ class RoundProgress(QWidget):
             else:
                 self.persent-=1
             self.update()
-            time.sleep(0.02)
+            time.sleep(0.005)
         lock.release()
 
     def parameterUpdate(self,p):
-        threading.Thread(target=lambda :self.__parameterUpdateReal(p)).start()
+        updateThread = threading.Thread(target=lambda :self.__parameterUpdateReal(p))
+        updateThread.setDaemon(True)
+        updateThread.start()
 
 
     def paintEvent(self, event):
@@ -53,7 +53,7 @@ class RoundProgress(QWidget):
         painter.drawEllipse(17, 17, 92, 92)  # 画内圆
         if self.persent>=0 and self.persent<=50:
             color = "#20a53a"
-        elif self.persent>50 and self.persent<=80:
+        elif self.persent>50 and self.persent<=75:
             color = "#ff9900"
         else:
             color = "#FF0033"

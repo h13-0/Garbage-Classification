@@ -4,7 +4,8 @@ from tensorflow.keras.preprocessing import image
 
 # import PyQt5
 from PyQt5.QtGui import QImage, QPixmap
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtWidgets import QWidget
 
 # Helper libraries
 import cv2 as cv
@@ -13,10 +14,20 @@ import threading, signal
 import os
 import time
 
-class Detector(threading.Thread):
-    def __init__(self, Qlabel, cameraID, weigthFile, className):
-        self.__qlabel__ = Qlabel
+class Detector(threading.Thread, QWidget):
+    # 结果输出用editText的信号槽
+    __outputSignal__ = pyqtSignal([str])
+ 
+    def __init__(self, ui, cameraID, weigthFile, className):
+        threading.Thread.__init__(self)
+        QWidget.__init__(self)
+        
+        self.__qlabel__ = ui.frame_label
         self.cameraID = cameraID
+        self.className = className
+
+        # 连接信号
+        self.__outputSignal__.connect(ui.outputResult)
 
         # Camera
         self.__capLock__ = threading.Lock()
@@ -40,6 +51,9 @@ class Detector(threading.Thread):
         for physical_device in physical_devices:
             tf.config.experimental.set_memory_growth(physical_device, True)
         self.__model__ = tf.keras.applications.Xception(include_top=True,weights=weigthFile,input_shape=(299,299,3),classes=len(className),pooling="avg")
+
+        # 加载完毕
+        self.__outputSignal__.emit("加载完毕")
 
 
     # 获取单帧图像
@@ -143,9 +157,12 @@ class Detector(threading.Thread):
 
         predictions = self.__model__.predict(imgs)
 
-        print(predictions)
-
+        self.__outputSignal__.emit(
+            "左侧: " + self.className[np.argmax(predictions[0])][0] + ", 是: " + self.className[np.argmax(predictions[0])][1] + " " + str(100*np.max(predictions[0])) + "%" + '\r\n' + 
+            "右侧: " + self.className[np.argmax(predictions[1])][0] + ", 是: " + self.className[np.argmax(predictions[1])][1] + " " + str(100*np.max(predictions[1])) + "%"
+        )
     
+
     # 录入新的物体(模板匹配)
     def newObject(self):
         pass

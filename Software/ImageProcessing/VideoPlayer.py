@@ -15,6 +15,7 @@ imgType_list = {'.jpg','.bmp','.png','.jpeg'}
 
 class VideoPlayer(threading.Thread):
     def __init__(self,Qlabel):
+        threading.Thread.__init__(self)
         super(VideoPlayer, self).__init__()
         self.__qlabel__ = Qlabel
 

@@ -22,11 +22,17 @@
   <property name="maximumSize">
    <size>
     <width>1280</width>
-    <height>670</height>
+    <height>650</height>
    </size>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
+  </property>
+  <property name="autoFillBackground">
+   <bool>false</bool>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: #FFFFFF;</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QGroupBox" name="groupBox">
@@ -40,7 +46,8 @@
     </property>
     <property name="styleSheet">
      <string notr="true">border:2px solid rgb(100,100,100);
-border-radius:15px;</string>
+border-radius:15px;
+background-color: #F4F4F4;</string>
     </property>
     <property name="title">
      <string>图像窗口</string>
@@ -80,71 +87,49 @@ border:2px solid rgb(200,200,200);</string>
       <rect>
        <x>10</x>
        <y>510</y>
-       <width>315</width>
+       <width>641</width>
        <height>110</height>
       </rect>
      </property>
      <property name="styleSheet">
       <string notr="true">border-radius:8px;
-border:2px solid rgb(200,200,200);</string>
+border:2px solid rgb(200,200,200);
+</string>
      </property>
      <property name="title">
-      <string>识别结果</string>
+      <string>处理结果</string>
      </property>
-    </widget>
-    <widget class="QGroupBox" name="groupBox_10">
-     <property name="geometry">
-      <rect>
-       <x>335</x>
-       <y>510</y>
-       <width>315</width>
-       <height>110</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border-radius:8px;
-border:2px solid rgb(200,200,200);</string>
-     </property>
-     <property name="title">
-      <string>功能区</string>
-     </property>
-     <widget class="QPushButton" name="pushButton_3">
+     <widget class="QTextEdit" name="textEdit">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>10</x>
         <y>20</y>
-        <width>92</width>
+        <width>621</width>
         <height>80</height>
        </rect>
       </property>
-      <property name="text">
-       <string>播放视频</string>
+      <property name="font">
+       <font>
+        <pointsize>14</pointsize>
+        <stylestrategy>PreferAntialias</stylestrategy>
+       </font>
       </property>
-     </widget>
-     <widget class="QPushButton" name="pushButton_4">
-      <property name="geometry">
-       <rect>
-        <x>112</x>
-        <y>20</y>
-        <width>92</width>
-        <height>80</height>
-       </rect>
+      <property name="styleSheet">
+       <string notr="true">border-radius:5px;
+background-color: rgb(255, 255, 255);</string>
       </property>
-      <property name="text">
-       <string>播放图片</string>
+      <property name="verticalScrollBarPolicy">
+       <enum>Qt::ScrollBarAsNeeded</enum>
       </property>
-     </widget>
-     <widget class="QPushButton" name="pushButton_5">
-      <property name="geometry">
-       <rect>
-        <x>214</x>
-        <y>20</y>
-        <width>92</width>
-        <height>80</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>轮流播放</string>
+      <property name="html">
+       <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'SimSun'; font-size:14pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;正在加载...&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
      </widget>
     </widget>
@@ -160,7 +145,8 @@ border:2px solid rgb(200,200,200);</string>
     </property>
     <property name="styleSheet">
      <string notr="true">border:2px solid rgb(100,100,100);
-border-radius:15px;</string>
+border-radius:15px;
+background-color: #EDEDED;</string>
     </property>
     <property name="title">
      <string>垃圾桶信息</string>
@@ -171,7 +157,7 @@ border-radius:15px;</string>
        <x>10</x>
        <y>20</y>
        <width>145</width>
-       <height>190</height>
+       <height>235</height>
       </rect>
      </property>
      <property name="styleSheet">
@@ -188,14 +174,15 @@ border:2px solid rgb(200,200,200);</string>
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>30</y>
+        <y>40</y>
         <width>125</width>
         <height>125</height>
        </rect>
       </property>
       <property name="styleSheet">
        <string notr="true">border-image:url(./RoundProcessBar.png) 0 0 0 0 stretch stretch;
-border:0px solid rgb(100,100,100);</string>
+border:0px;
+background-color: rgba(0, 0, 0, 0);</string>
       </property>
       <property name="currentIndex">
        <number>1</number>
@@ -203,12 +190,12 @@ border:0px solid rgb(100,100,100);</string>
       <widget class="QWidget" name="page_3"/>
       <widget class="QWidget" name="page_4"/>
      </widget>
-     <widget class="QLabel" name="label_4">
+     <widget class="QLabel" name="RecycleNumbers">
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>160</y>
-        <width>70</width>
+        <y>185</y>
+        <width>105</width>
         <height>20</height>
        </rect>
       </property>
@@ -219,14 +206,16 @@ border:0px solid rgb(100,100,100);</string>
        <string>当前件数:</string>
       </property>
      </widget>
+     <zorder>RecycleNumbers</zorder>
+     <zorder>stackedWidget_Recycle</zorder>
     </widget>
     <widget class="QGroupBox" name="groupBox_5">
      <property name="geometry">
       <rect>
-       <x>170</x>
-       <y>20</y>
+       <x>10</x>
+       <y>265</y>
        <width>145</width>
-       <height>190</height>
+       <height>235</height>
       </rect>
      </property>
      <property name="styleSheet">
@@ -243,14 +232,15 @@ border:2px solid rgb(200,200,200);</string>
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>30</y>
+        <y>40</y>
         <width>125</width>
         <height>125</height>
        </rect>
       </property>
       <property name="styleSheet">
        <string notr="true">border-image:url(./RoundProcessBar.png) 0 0 0 0 stretch stretch;
-border:0px solid rgb(100,100,100);</string>
+border:0px;
+background-color: rgba(0, 0, 0, 0);</string>
       </property>
       <property name="currentIndex">
        <number>0</number>
@@ -258,12 +248,12 @@ border:0px solid rgb(100,100,100);</string>
       <widget class="QWidget" name="page_7"/>
       <widget class="QWidget" name="page_8"/>
      </widget>
-     <widget class="QLabel" name="label_3">
+     <widget class="QLabel" name="HarmfulNumbers">
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>160</y>
-        <width>70</width>
+        <y>185</y>
+        <width>105</width>
         <height>20</height>
        </rect>
       </property>
@@ -274,14 +264,16 @@ border:0px solid rgb(100,100,100);</string>
        <string>当前件数:</string>
       </property>
      </widget>
+     <zorder>HarmfulNumbers</zorder>
+     <zorder>stackedWidget_Harmful</zorder>
     </widget>
     <widget class="QGroupBox" name="groupBox_6">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>230</y>
+       <x>170</x>
+       <y>265</y>
        <width>145</width>
-       <height>191</height>
+       <height>235</height>
       </rect>
      </property>
      <property name="styleSheet">
@@ -298,14 +290,15 @@ border:2px solid rgb(200,200,200);</string>
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>30</y>
+        <y>40</y>
         <width>125</width>
         <height>125</height>
        </rect>
       </property>
       <property name="styleSheet">
        <string notr="true">border-image:url(./RoundProcessBar.png) 0 0 0 0 stretch stretch;
-border:0px solid rgb(100,100,100);</string>
+border:0px;
+background-color: rgba(0, 0, 0, 0);</string>
       </property>
       <property name="currentIndex">
        <number>0</number>
@@ -313,12 +306,12 @@ border:0px solid rgb(100,100,100);</string>
       <widget class="QWidget" name="page_9"/>
       <widget class="QWidget" name="page_10"/>
      </widget>
-     <widget class="QLabel" name="label_5">
+     <widget class="QLabel" name="OtherNumbers">
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>160</y>
-        <width>70</width>
+        <y>185</y>
+        <width>105</width>
         <height>20</height>
        </rect>
       </property>
@@ -329,14 +322,16 @@ border:0px solid rgb(100,100,100);</string>
        <string>当前件数:</string>
       </property>
      </widget>
+     <zorder>OtherNumbers</zorder>
+     <zorder>stackedWidget_Other</zorder>
     </widget>
     <widget class="QGroupBox" name="groupBox_7">
      <property name="geometry">
       <rect>
        <x>170</x>
-       <y>230</y>
+       <y>20</y>
        <width>145</width>
-       <height>191</height>
+       <height>235</height>
       </rect>
      </property>
      <property name="styleSheet">
@@ -353,14 +348,15 @@ border:2px solid rgb(200,200,200);</string>
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>30</y>
+        <y>40</y>
         <width>125</width>
         <height>125</height>
        </rect>
       </property>
       <property name="styleSheet">
        <string notr="true">border-image:url(./RoundProcessBar.png) 0 0 0 0 stretch stretch;
-border:0px solid rgb(100,100,100);</string>
+border:0px;
+background-color: rgba(0, 0, 0, 0);</string>
       </property>
       <property name="currentIndex">
        <number>0</number>
@@ -368,12 +364,12 @@ border:0px solid rgb(100,100,100);</string>
       <widget class="QWidget" name="page_5"/>
       <widget class="QWidget" name="page_6"/>
      </widget>
-     <widget class="QLabel" name="label_6">
+     <widget class="QLabel" name="KitchenNumbers">
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>160</y>
-        <width>70</width>
+        <y>185</y>
+        <width>105</width>
         <height>20</height>
        </rect>
       </property>
@@ -384,14 +380,16 @@ border:0px solid rgb(100,100,100);</string>
        <string>当前件数:</string>
       </property>
      </widget>
+     <zorder>KitchenNumbers</zorder>
+     <zorder>stackedWidget_Kitchen</zorder>
     </widget>
     <widget class="QGroupBox" name="groupBox_2">
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>430</y>
+       <y>510</y>
        <width>305</width>
-       <height>191</height>
+       <height>111</height>
       </rect>
      </property>
      <property name="styleSheet">
@@ -399,38 +397,46 @@ border:0px solid rgb(100,100,100);</string>
 border:2px solid rgb(200,200,200);</string>
      </property>
      <property name="title">
-      <string>功能区</string>
+      <string>垃圾信息功能区</string>
      </property>
-     <widget class="QPushButton" name="pushButton">
+     <widget class="QPushButton" name="LoadTest">
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>20</y>
+        <y>25</y>
         <width>135</width>
-        <height>71</height>
+        <height>75</height>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true"/>
+       <string notr="true">background-color: #FFFFFF;</string>
       </property>
       <property name="text">
        <string>垃圾满载检测</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_2">
+     <widget class="QPushButton" name="ClearNumbers">
       <property name="geometry">
        <rect>
         <x>160</x>
-        <y>20</y>
+        <y>25</y>
         <width>135</width>
-        <height>71</height>
+        <height>75</height>
        </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: #FFFFFF;</string>
       </property>
       <property name="text">
        <string>垃圾数量清零</string>
       </property>
      </widget>
     </widget>
+    <zorder>groupBox_5</zorder>
+    <zorder>groupBox_6</zorder>
+    <zorder>groupBox_7</zorder>
+    <zorder>groupBox_2</zorder>
+    <zorder>groupBox_4</zorder>
    </widget>
    <widget class="QGroupBox" name="groupBox_9">
     <property name="geometry">
@@ -443,11 +449,239 @@ border:2px solid rgb(200,200,200);</string>
     </property>
     <property name="styleSheet">
      <string notr="true">border:2px solid rgb(100,100,100);
-border-radius:15px;</string>
+border-radius:15px;
+background-color: #EDEDED;</string>
     </property>
     <property name="title">
-     <string>模式选择</string>
+     <string>功能区</string>
     </property>
+    <widget class="QGroupBox" name="groupBox_11">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>355</y>
+       <width>221</width>
+       <height>265</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border-radius:8px;
+border:2px solid rgb(200,200,200);</string>
+     </property>
+     <property name="title">
+      <string>录入新垃圾</string>
+     </property>
+     <widget class="QPushButton" name="pushButton_8">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>105</y>
+        <width>95</width>
+        <height>70</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: #E4E4E4;</string>
+      </property>
+      <property name="text">
+       <string>可回收垃圾</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_9">
+      <property name="geometry">
+       <rect>
+        <x>115</x>
+        <y>105</y>
+        <width>95</width>
+        <height>70</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: #E4E4E4;</string>
+      </property>
+      <property name="text">
+       <string>厨余垃圾</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_10">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>185</y>
+        <width>95</width>
+        <height>70</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: #E4E4E4;</string>
+      </property>
+      <property name="text">
+       <string>有害垃圾</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_11">
+      <property name="geometry">
+       <rect>
+        <x>115</x>
+        <y>185</y>
+        <width>95</width>
+        <height>70</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: #E4E4E4;</string>
+      </property>
+      <property name="text">
+       <string>其他垃圾</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_12">
+      <property name="geometry">
+       <rect>
+        <x>115</x>
+        <y>25</y>
+        <width>95</width>
+        <height>70</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: #FFFFFF;</string>
+      </property>
+      <property name="text">
+       <string>重新录入</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_13">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>25</y>
+        <width>95</width>
+        <height>70</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: #FFFFFF;</string>
+      </property>
+      <property name="text">
+       <string>准备录入</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QGroupBox" name="groupBox_12">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>220</width>
+       <height>101</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border-radius:8px;
+border:2px solid rgb(200,200,200);</string>
+     </property>
+     <property name="title">
+      <string>模式切换</string>
+     </property>
+     <widget class="QPushButton" name="pushButton_6">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>20</y>
+        <width>95</width>
+        <height>70</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: #FEFEFE;</string>
+      </property>
+      <property name="text">
+       <string>初赛模式</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_7">
+      <property name="geometry">
+       <rect>
+        <x>115</x>
+        <y>20</y>
+        <width>95</width>
+        <height>70</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: #EDEDED;</string>
+      </property>
+      <property name="text">
+       <string>决赛模式</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QGroupBox" name="groupBox_10">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>130</y>
+       <width>220</width>
+       <height>215</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border-radius:8px;
+border:2px solid rgb(200,200,200);</string>
+     </property>
+     <property name="title">
+      <string>图像功能区</string>
+     </property>
+     <widget class="QPushButton" name="pushButton_3">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>20</y>
+        <width>200</width>
+        <height>55</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: #E4E4E4;</string>
+      </property>
+      <property name="text">
+       <string>播放视频</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_4">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>85</y>
+        <width>200</width>
+        <height>55</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: #E4E4E4;</string>
+      </property>
+      <property name="text">
+       <string>播放图片</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_5">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>150</y>
+        <width>200</width>
+        <height>55</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: #FFFFFF;</string>
+      </property>
+      <property name="text">
+       <string>轮流播放</string>
+      </property>
+     </widget>
+    </widget>
    </widget>
   </widget>
  </widget>
