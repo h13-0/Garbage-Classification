@@ -11,7 +11,7 @@ import platform
 
 ## WorkingProcess
 ### POP Methods
-from WorkingProcess.TestProcess import TestProcess
+from WorkingProcess.MainProcess import Process
 #from WorkingProcess.MainProcess import MainProcess
 
 def main():
@@ -28,8 +28,8 @@ def main():
     ui.setupUi(Mainw)
     Mainw.show()
 
-    # Test
-    TestProcess(ui)
+    # process
+    process = Process(ui)
     
     sys.exit(app.exec_())
 

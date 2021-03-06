@@ -535,7 +535,7 @@ border:2px solid rgb(200,200,200);</string>
        <string>其他垃圾</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_12">
+     <widget class="QPushButton" name="ReRecord">
       <property name="geometry">
        <rect>
         <x>115</x>
@@ -551,7 +551,7 @@ border:2px solid rgb(200,200,200);</string>
        <string>重新录入</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_13">
+     <widget class="QPushButton" name="ReadyToRecord">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -584,7 +584,7 @@ border:2px solid rgb(200,200,200);</string>
      <property name="title">
       <string>模式切换</string>
      </property>
-     <widget class="QPushButton" name="pushButton_6">
+     <widget class="QPushButton" name="PreMode">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -600,7 +600,7 @@ border:2px solid rgb(200,200,200);</string>
        <string>初赛模式</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_7">
+     <widget class="QPushButton" name="FinalMode">
       <property name="geometry">
        <rect>
         <x>115</x>
@@ -610,7 +610,7 @@ border:2px solid rgb(200,200,200);</string>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: #EDEDED;</string>
+       <string notr="true">background-color: #E4E4E4;</string>
       </property>
       <property name="text">
        <string>决赛模式</string>
@@ -633,7 +633,7 @@ border:2px solid rgb(200,200,200);</string>
      <property name="title">
       <string>图像功能区</string>
      </property>
-     <widget class="QPushButton" name="pushButton_3">
+     <widget class="QPushButton" name="PlayVideo">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -649,7 +649,7 @@ border:2px solid rgb(200,200,200);</string>
        <string>播放视频</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_4">
+     <widget class="QPushButton" name="PlayPhoto">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -665,7 +665,7 @@ border:2px solid rgb(200,200,200);</string>
        <string>播放图片</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_5">
+     <widget class="QPushButton" name="TakeTurns">
       <property name="geometry">
        <rect>
         <x>10</x>

@@ -26,6 +26,12 @@ class Detector(threading.Thread, QWidget):
         self.cameraID = cameraID
         self.className = className
 
+        '''
+        # PreMode   初赛模式 -> 即一次投入一个垃圾
+        # FinalMode 决赛模式 -> 即一次投入两个垃圾
+        '''
+        self.mode = "PreMode"
+
         # 连接信号
         self.__outputSignal__.connect(ui.outputResult)
 
@@ -149,6 +155,11 @@ class Detector(threading.Thread, QWidget):
 
         return leftArea, rightArea
 
+
+    def switchMode(self, mode = "PreMode"):
+        if((mode == 'PreMode') or (mode == 'FinalMode')):
+            self.mode = mode
+    
         
     # 预测种类
     def predict(self):

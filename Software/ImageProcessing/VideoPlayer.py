@@ -36,7 +36,7 @@ class VideoPlayer(threading.Thread):
 
 
     # 循环播放视频
-    def fromVideo(self,file = "./video.mp4"):
+    def fromVideo(self, file = "./video.mp4"):
         self.pause()
         time.sleep(0.1)
         self.mode = 'video'
@@ -44,7 +44,7 @@ class VideoPlayer(threading.Thread):
         
 
     # 循环播放文件夹下所有图片
-    def fromFloder(self,floder = "./imgs"):
+    def fromFloder(self, floder = "./imgs"):
         self.pause()
         time.sleep(0.1)
         self.mode = 'picture'
@@ -60,6 +60,12 @@ class VideoPlayer(threading.Thread):
                     self.numberOfPictures += 1
                     break
     
+
+    # 视频图片轮流播放
+    def takeTurns(self, file = "./video.mp4", floder = "./imgs"):
+        self.__file__ = file
+
+
 
     # 从cv2的numpy转换到QPixmap的内部实现
     ## 自动缩放, 不拉伸

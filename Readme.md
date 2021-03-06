@@ -1,13 +1,15 @@
 # 一个基于Xception图像识别的垃圾分类项目
 
 ## 硬件要求
-<font color='red'>**请务必使用4G及以上的Linux硬件**</font>
-**建议使用Jetson Nano(约26fps) 或树莓派4B (约0.3fps)**
+**<font color="red">请务必使用4G及以上的Linux硬件</font>**  
+**建议使用Jetson Nano(约26fps) 或树莓派4B (约0.3fps)**  
 
 
 ## 图像识别部分
 ### Xception 图像分类实现
 #### 模型训练
+
+请务必使用自己的摄像头针对自己的设备添加足够训练集之后再进行训练。
 
 #### 模型校验
 
