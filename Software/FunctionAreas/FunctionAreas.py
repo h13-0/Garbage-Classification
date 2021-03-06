@@ -23,6 +23,21 @@ class Functions():
         self.__ui__.TakeTurns.clicked.connect(lambda:self.__takeTurns__())
 
         # 录入新垃圾
+        self.__ui__.ReadyToRecord.clicked.connect(lambda:self.__readyToRecord__())
+        # 重新录入
+        self.__ui__.ReRecord.clicked.connect(lambda:self.__reRecord__())
+
+        ## 新的可回收垃圾
+        self.__ui__.NewRecycle.clicked.connect(lambda:self.__newRecycle__())
+
+        ## 新的厨余垃圾
+        self.__ui__.NewKitchen.clicked.connect(lambda:self.__newKitchen__())
+
+        ## 新的有害垃圾
+        self.__ui__.NewHarmful.clicked.connect(lambda:self.__newHarmful__())
+
+        ## 新的其他垃圾
+        self.__ui__.NewOther.clicked.connect(lambda:self.__newOther__())
 
 
     # 切换为初赛模式
@@ -66,30 +81,51 @@ class Functions():
     # 准备录入新垃圾
     def __readyToRecord__(self):
         self.__ui__.ReadyToRecord.setStyleSheet(self.__disableStyleSheet__)
+        self.__enableAllKinds__()
 
     
     # 新垃圾录入完毕(或失败), 由其他对象调起
     def recordFinish(self):
         self.__ui__.ReadyToRecord.setStyleSheet(self.__enableStyleSheet__)
+        self.__disableAllKinds__()
+
+    
+    # 重新录入, 删除所有模板
+    def __reRecord__(self):
+        pass
 
 
     # 录入新的可回收垃圾
     def __newRecycle__(self):
-        pass
+        self.__disableAllKinds__()
 
 
     # 录入新的厨余垃圾
     def __newKitchen__(self):
-        pass
+        self.__disableAllKinds__()
 
 
     # 录入新的有害垃圾
     def __newHarmful__(self):
-        pass
+        self.__disableAllKinds__()
 
 
     # 录入新的其他垃圾
     def __newOther__(self):
-        pass
+        self.__disableAllKinds__()
 
 
+    # 准备录入, 使四种垃圾的按钮全部生效
+    def __enableAllKinds__(self):
+        self.__ui__.NewRecycle.setStyleSheet(self.__enableStyleSheet__)
+        self.__ui__.NewKitchen.setStyleSheet(self.__enableStyleSheet__)
+        self.__ui__.NewHarmful.setStyleSheet(self.__enableStyleSheet__)
+        self.__ui__.NewOther.setStyleSheet(self.__enableStyleSheet__)
+
+
+    # 录入完毕, 使四种垃圾的按钮全部失效
+    def __disableAllKinds__(self):
+        self.__ui__.NewRecycle.setStyleSheet(self.__disableStyleSheet__)
+        self.__ui__.NewKitchen.setStyleSheet(self.__disableStyleSheet__)
+        self.__ui__.NewHarmful.setStyleSheet(self.__disableStyleSheet__)
+        self.__ui__.NewOther.setStyleSheet(self.__disableStyleSheet__)
