@@ -33,6 +33,10 @@ class RoundProgress(QWidget):
         lock.release()
 
     def parameterUpdate(self,p):
+        if(p > 100):
+            p = 100
+        elif(p < 0):
+            p = 0
         updateThread = threading.Thread(target=lambda :self.__parameterUpdateReal(p))
         updateThread.setDaemon(True)
         updateThread.start()

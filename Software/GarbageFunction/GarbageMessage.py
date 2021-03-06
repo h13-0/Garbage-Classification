@@ -4,15 +4,21 @@ from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QWidget
 
 
+# import Helper libs
+import threading
+import time
+
 class GarbageMessage(QWidget):
     __recycleNumberSignal__ = pyqtSignal([int])
     __kitchenNumberSignal__ = pyqtSignal([int])
     __harmfulNumberSignal__ = pyqtSignal([int])
     __otherNumberSignal__ = pyqtSignal([int])
 
-    def __init__(self, UI):
+    def __init__(self, ui):
         QWidget.__init__(self)
-        self.__ui__ = UI
+        self.__ui__ = ui
+        self.__slave__ = None
+        self.__slaveLock__ = threading.Lock()
 
         # 显示动画
         self.__ui__.processbar_recycle.parameterUpdate(100)
@@ -39,7 +45,13 @@ class GarbageMessage(QWidget):
         # 归零
         self.clear()
 
+        # UI刷新线程
+        self.__loadFlashThread__ = threading.Thread(target=self.__loadFlash__)
+        self.__loadFlashThread__.setDaemon(True)
+        self.__loadFlashThread__.start()
 
+
+    # 清零计数
     def clear(self):
         print("clear")
         self.__recycleNumberSignal__.emit(0)
@@ -48,7 +60,21 @@ class GarbageMessage(QWidget):
         self.__otherNumberSignal__.emit(0)
 
 
-    def loadTest(self):
-        pass
+    # 设置slave
+    def setSlave(self, slave):
+        with self.__slaveLock__:
+            self.__slave__ = slave
+
+    def __loadFlash__(self):
+        while True:
+            time.sleep(10)
+            with self.__slaveLock__:
+                if not self.__slave__ is None:
+                    rec, kit, har, oth = self.__slave__.getLoadTest()
+
+                    self.__ui__.processbar_recycle.parameterUpdate(rec)
+                    self.__ui__.processbar_kitchen.parameterUpdate(kit)
+                    self.__ui__.processbar_harmful.parameterUpdate(har)
+                    self.__ui__.processbar_other.parameterUpdate(oth)
 
 

@@ -43,13 +43,13 @@ class Process(QWidget):
         self.__detectorInitThread__.setDaemon(True)
         self.__detectorInitThread__.start()
 
-        # 初始化垃圾桶信息区域
-        self.__garbageMessage__ = GarbageMessage(self.__ui__)
-
         # 开始轮流播放
         self.__videoPlayer__ = VideoPlayer(self.__ui__.frame_label)
         self.__videoPlayer__.takeTurns()
         self.__videoPlayer__.start()
+
+        # 初始化垃圾桶信息区域
+        self.__garbageMessage__ = GarbageMessage(self.__ui__)
 
 
     # 主要逻辑部分
@@ -83,6 +83,7 @@ class Process(QWidget):
         # 创建下位机对象
         try:
             self.__slave__ = Slave(self.__com__)
+            self.__garbageMessage__.setSlave(self.__slave__)
         except Exception:
             print("串口: " + str(self.__com__) + " 打开失败")
             msg_box = QMessageBox.critical(self, "Error!", "串口: " + str(self.__com__) + " 打开失败",  QMessageBox.Ok, QMessageBox.Ok)

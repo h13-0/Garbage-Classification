@@ -26,7 +26,7 @@ def main():
     Mainw.show()
 
     # process
-    process = Process(ui, "COM4")
+    process = Process(ui, "COM3")
     
     sys.exit(app.exec_())
 
