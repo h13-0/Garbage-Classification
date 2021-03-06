@@ -48,7 +48,7 @@ class VideoPlayer(threading.Thread):
             time.sleep(0.1)
             self.mode = 'video'
             self.__file__ = file
-            self.start()
+            self.resume()
 
         else:
             self.pause()
@@ -76,7 +76,7 @@ class VideoPlayer(threading.Thread):
                         self.numberOfPictures += 1
                         break
             
-            self.start()
+            self.resume()
 
         else:
             self.mode = 'picture'
@@ -113,7 +113,7 @@ class VideoPlayer(threading.Thread):
                         self.numberOfPictures += 1
                         break
 
-            self.start()
+            self.resume()
             
         else:
             self.mode = "takeTurns"
