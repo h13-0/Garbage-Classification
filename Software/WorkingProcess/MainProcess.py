@@ -21,6 +21,7 @@ from GarbageFunction.GarbageMessage import GarbageMessage
 from FunctionAreas.FunctionAreas import Functions
 
 ## Hardware
+from Hardware.Slave import Slave
 
 class Process(QWidget):
     __detectorOkSignal__ = pyqtSignal()
@@ -49,17 +50,8 @@ class Process(QWidget):
         self.__videoPlayer__.takeTurns()
         self.__videoPlayer__.start()
 
-        # 创建子线程
-        self.__mainThread__ = threading.Thread(target=self.__main__)
-        self.__mainThread__.setDaemon(True)
-        self.__mainThread__.start()
-
-
     def __main__(self):
-        # 等待detector加载完毕
-        with self.__detectorLock__:
-            pass
-
+        # Write your Code Here:
 
         # end
         while True:
@@ -73,9 +65,15 @@ class Process(QWidget):
                     ['水果', '厨余垃圾'] , ['纸张', '可回收垃圾'], ['碎砖块', '其他垃圾'] , ['蔬菜', '厨余垃圾'] , ['水瓶', '可回收垃圾'] ]
             self.__detector__ = Detector(self.__ui__, 0, "./weight/Result.hdf5", className)
 
+        # 发送Detector加载完毕的信号
         self.__detectorOkSignal__.emit()
 
 
     # 等待Detector加载完毕后初始化功能区
     def __functionInit__(self):
         self.__functions__ = Functions(self.__ui__, self.__videoPlayer__, self.__detector__)
+
+        # 创建子线程
+        self.__mainThread__ = threading.Thread(target=self.__main__)
+        self.__mainThread__.setDaemon(True)
+        self.__mainThread__.start()

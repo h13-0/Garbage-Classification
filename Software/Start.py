@@ -10,9 +10,7 @@ import os
 import platform
 
 ## WorkingProcess
-### POP Methods
 from WorkingProcess.MainProcess import Process
-#from WorkingProcess.MainProcess import MainProcess
 
 def main():
     # 如果被部署到Linux上 首先清除系统缓存以获取更大的可用内存
@@ -20,7 +18,6 @@ def main():
         os.system("sync; echo 3 > /proc/sys/vm/drop_caches")
     
     # 初始化UI
-    global ui
     app = QApplication(sys.argv)
     
     Mainw = QMainWindow()
