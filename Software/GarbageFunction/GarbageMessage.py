@@ -12,29 +12,29 @@ class GarbageMessage(QWidget):
 
     def __init__(self, UI):
         QWidget.__init__(self)
-        self.ui = UI
+        self.__ui__ = UI
 
         # 显示动画
-        self.ui.processbar_recycle.parameterUpdate(100)
-        self.ui.processbar_recycle.parameterUpdate(0)
+        self.__ui__.processbar_recycle.parameterUpdate(100)
+        self.__ui__.processbar_recycle.parameterUpdate(0)
 
-        self.ui.processbar_kitchen.parameterUpdate(100)
-        self.ui.processbar_kitchen.parameterUpdate(0)
+        self.__ui__.processbar_kitchen.parameterUpdate(100)
+        self.__ui__.processbar_kitchen.parameterUpdate(0)
 
-        self.ui.processbar_harmful.parameterUpdate(100)
-        self.ui.processbar_harmful.parameterUpdate(0)
+        self.__ui__.processbar_harmful.parameterUpdate(100)
+        self.__ui__.processbar_harmful.parameterUpdate(0)
 
-        self.ui.processbar_other.parameterUpdate(100)
-        self.ui.processbar_other.parameterUpdate(0)
+        self.__ui__.processbar_other.parameterUpdate(100)
+        self.__ui__.processbar_other.parameterUpdate(0)
 
         # 连接信号
-        self.__recycleNumberSignal__.connect(self.ui.setRecycleNumber)
-        self.__kitchenNumberSignal__.connect(self.ui.setKitchenNumber)
-        self.__harmfulNumberSignal__.connect(self.ui.setHarmfulNumber)
-        self.__otherNumberSignal__.connect(self.ui.setOtherNumber)
+        self.__recycleNumberSignal__.connect(self.__ui__.setRecycleNumber)
+        self.__kitchenNumberSignal__.connect(self.__ui__.setKitchenNumber)
+        self.__harmfulNumberSignal__.connect(self.__ui__.setHarmfulNumber)
+        self.__otherNumberSignal__.connect(self.__ui__.setOtherNumber)
 
-        self.ui.LoadTest.clicked.connect(lambda:self.loadTest())
-        self.ui.ClearNumbers.clicked.connect(lambda:self.clear())
+        self.__ui__.LoadTest.clicked.connect(lambda:self.loadTest())
+        self.__ui__.ClearNumbers.clicked.connect(lambda:self.clear())
 
         # 归零
         self.clear()

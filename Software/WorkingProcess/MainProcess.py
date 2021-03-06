@@ -28,36 +28,36 @@ class Process(QWidget):
     def __init__(self, ui):
         QWidget.__init__(self)
 
-        self.ui = ui
+        self.__ui__ = ui
 
         self.functions = None
         # 设置信号
-        self.__detectorOkSignal__.connect(lambda:self.functionInit())
+        self.__detectorOkSignal__.connect(lambda:self.__functionInit__())
     
         # 创建一个新线程以初始化Detector
-        self.detector = None
-        self.detectorLock = threading.Lock()
-        self.detectorInitThread = threading.Thread(target=self.detectorInit)
-        self.detectorInitThread.setDaemon(True)
-        self.detectorInitThread.start()
+        self.__detector__ = None
+        self.__detectorLock__ = threading.Lock()
+        self.__detectorInitThread__ = threading.Thread(target=self.__detectorInit__)
+        self.__detectorInitThread__.setDaemon(True)
+        self.__detectorInitThread__.start()
 
         # 初始化垃圾桶信息区域
-        self.garbageMessage = GarbageMessage(self.ui)
+        self.__garbageMessage__ = GarbageMessage(self.__ui__)
 
         # 开始播放视频
-        self.videoPlayer = VideoPlayer(self.ui.frame_label)
-        self.videoPlayer.fromVideo()
-        self.videoPlayer.start()
+        self.__videoPlayer__ = VideoPlayer(self.__ui__.frame_label)
+        self.__videoPlayer__.fromVideo()
+        self.__videoPlayer__.start()
 
         # 创建子线程
-        self.mainThread = threading.Thread(target=self.main)
-        self.mainThread.setDaemon(True)
-        self.mainThread.start()
+        self.__mainThread__ = threading.Thread(target=self.__main__)
+        self.__mainThread__.setDaemon(True)
+        self.__mainThread__.start()
 
 
-    def main(self):
+    def __main__(self):
         # 等待detector加载完毕
-        with self.detectorLock:
+        with self.__detectorLock__:
             pass
 
 
@@ -66,16 +66,16 @@ class Process(QWidget):
             pass
 
 
-    def detectorInit(self):
+    def __detectorInit__(self):
         # 初始化Detector
-        with self.detectorLock:
+        with self.__detectorLock__:
             className = [ ['电池', '有害垃圾'] , ['碎瓷片', '其他垃圾'] , ['易拉罐', '可回收垃圾'] , ['烟蒂', '其他垃圾'] , ['药物', '有害垃圾'] ,
                     ['水果', '厨余垃圾'] , ['纸张', '可回收垃圾'], ['碎砖块', '其他垃圾'] , ['蔬菜', '厨余垃圾'] , ['水瓶', '可回收垃圾'] ]
-            self.detector = Detector(self.ui, 0, "./weight/Result.hdf5", className)
+            self.__detector__ = Detector(self.__ui__, 0, "./weight/Result.hdf5", className)
 
         self.__detectorOkSignal__.emit()
 
 
     # 等待Detector加载完毕后初始化功能区
-    def functionInit(self):
-        self.functions = Functions(self.ui, self.videoPlayer, self.detector)
+    def __functionInit__(self):
+        self.__functions__ = Functions(self.__ui__, self.__videoPlayer__, self.__detector__)

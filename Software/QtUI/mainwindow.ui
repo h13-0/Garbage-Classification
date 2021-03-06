@@ -471,7 +471,7 @@ border:2px solid rgb(200,200,200);</string>
      <property name="title">
       <string>录入新垃圾</string>
      </property>
-     <widget class="QPushButton" name="pushButton_8">
+     <widget class="QPushButton" name="NewRecycle">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -487,7 +487,7 @@ border:2px solid rgb(200,200,200);</string>
        <string>可回收垃圾</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_9">
+     <widget class="QPushButton" name="NewKitchen">
       <property name="geometry">
        <rect>
         <x>115</x>
@@ -503,7 +503,7 @@ border:2px solid rgb(200,200,200);</string>
        <string>厨余垃圾</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_10">
+     <widget class="QPushButton" name="NewHarmful">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -519,7 +519,7 @@ border:2px solid rgb(200,200,200);</string>
        <string>有害垃圾</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_11">
+     <widget class="QPushButton" name="NewOther">
       <property name="geometry">
        <rect>
         <x>115</x>
