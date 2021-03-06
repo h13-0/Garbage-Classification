@@ -1,5 +1,5 @@
 # import PyQt5
-from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QWidget, QMessageBox
 from PyQt5.QtCore import pyqtSignal
 
 # import UI
@@ -26,14 +26,15 @@ from Hardware.Slave import Slave
 class Process(QWidget):
     __detectorOkSignal__ = pyqtSignal()
 
-    def __init__(self, ui):
+    def __init__(self, ui, com):
         QWidget.__init__(self)
 
         self.__ui__ = ui
+        self.__com__ = com
 
         self.functions = None
         # 设置信号
-        self.__detectorOkSignal__.connect(lambda:self.__functionInit__())
+        self.__detectorOkSignal__.connect(lambda:self.__detectorInited__())
     
         # 创建一个新线程以初始化Detector
         self.__detector__ = None
@@ -50,14 +51,15 @@ class Process(QWidget):
         self.__videoPlayer__.takeTurns()
         self.__videoPlayer__.start()
 
+
+    # 主要逻辑部分
     def __main__(self):
         # Write your Code Here:
-
-        # end
         while True:
             pass
 
 
+    # 子线程初始化detector
     def __detectorInit__(self):
         # 初始化Detector
         with self.__detectorLock__:
@@ -69,11 +71,18 @@ class Process(QWidget):
         self.__detectorOkSignal__.emit()
 
 
-    # 等待Detector加载完毕后初始化功能区
-    def __functionInit__(self):
+    # Detector加载完毕后执行以下内容
+    def __detectorInited__(self):
         self.__functions__ = Functions(self.__ui__, self.__videoPlayer__, self.__detector__)
 
         # 创建子线程
         self.__mainThread__ = threading.Thread(target=self.__main__)
         self.__mainThread__.setDaemon(True)
         self.__mainThread__.start()
+
+        # 创建下位机对象
+        try:
+            self.__slave__ = Slave(self.__com__)
+        except Exception:
+            print("串口: " + str(self.__com__) + " 打开失败")
+            msg_box = QMessageBox.critical(self, "Error!", "串口: " + str(self.__com__) + " 打开失败",  QMessageBox.Ok, QMessageBox.Ok)
