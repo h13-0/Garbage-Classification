@@ -222,6 +222,10 @@ class VideoPlayer(threading.Thread):
                             break
 
                         time.sleep(self.__delay__)
+                    
+                    self.__cap__ = cv.VideoCapture(self.__file__)
+                    if(not self.__cap__.isOpened()):
+                        raise Exception("Could not open VideoCapture: " + str(self.__file__))
 
 
     # 开始播放
