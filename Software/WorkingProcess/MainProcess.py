@@ -26,10 +26,11 @@ from Hardware.Slave import Slave
 class Process(QWidget):
     __detectorOkSignal__ = pyqtSignal()
 
-    def __init__(self, ui, com):
+    def __init__(self, ui, cam, com, thre, minArea):
         QWidget.__init__(self)
 
         self.__ui__ = ui
+        self.__cam__ = cam
         self.__com__ = com
 
         self.functions = None
@@ -65,7 +66,7 @@ class Process(QWidget):
         with self.__detectorLock__:
             className = [ ['电池', '有害垃圾'] , ['碎瓷片', '其他垃圾'] , ['易拉罐', '可回收垃圾'] , ['烟蒂', '其他垃圾'] , ['药物', '有害垃圾'] ,
                     ['水果', '厨余垃圾'] , ['纸张', '可回收垃圾'], ['碎砖块', '其他垃圾'] , ['蔬菜', '厨余垃圾'] , ['水瓶', '可回收垃圾'] ]
-            self.__detector__ = Detector(self.__ui__, 0, "./weight/Result.hdf5", className)
+            self.__detector__ = Detector(self.__ui__, self.__cam__, "./weight/Result.hdf5", className)
 
         # 发送Detector加载完毕的信号
         self.__detectorOkSignal__.emit()

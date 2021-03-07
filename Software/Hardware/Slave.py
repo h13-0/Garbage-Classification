@@ -5,7 +5,7 @@ import serial
 import threading
 
 class Slave():
-    def __init__(self, com = '/dev/tty'):
+    def __init__(self, com):
         self.__usart__ = serial.Serial(com, 115200, timeout=None)
 
         # 垃圾桶容量信息
@@ -55,9 +55,53 @@ class Slave():
 
                 # 挡板事件
                 elif(sp[0] == 'Baffle'):
-                    print(sp[1])
+                    # 左侧挡板
+                    if(sp[1] == 'Left'):
+                        if(sp[2] == 'Opened'):
+                            # Do someting
+                            pass
+
+                        elif(sp[2] == 'Closed'):
+                            # Do something
+                            pass
+
+                        
+
+                    # 右侧挡板
+                    elif(sp[1] == 'Right'):
+                        if(sp[2] == 'Opened'):
+                            # Do someting
+                            pass
+
+                        elif(sp[2] == 'Closed'):
+                            # Do something
+                            pass
+
+                    # 终端挡板
+                    elif(sp[1] == 'Middle'):
+                        if(sp[2] == 'Opened'):
+                            # Do someting
+                            pass
+
+                        elif(sp[2] == 'Closed'):
+                            # Do something
+                            pass
+
 
         
     # 返回容量信息
     def getLoadTest(self):
         return self.__recycleLoad__, self.__kitchenLoad__, self.__harmfulLoad__, self.__otherLoad__
+
+    
+    def openBaffle(self, target, timeout):
+        self.__usart__.write(("Baffle:" + target + "Open\r\n").encode("utf-8"))
+        # wait
+
+    
+    def closeBaffle(self, target, timeout):
+        self.__usart__.write(("Baffle:" + target + "Close\r\n").encode("utf-8"))
+        # wait
+
+    def conveyorForward(self):
+        self.__usart__.write(("Conveyor" + "Forward\r\n").encode("utf-8"))

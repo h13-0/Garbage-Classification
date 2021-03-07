@@ -472,6 +472,9 @@ border:2px solid rgb(200,200,200);</string>
       <string>录入新垃圾</string>
      </property>
      <widget class="QPushButton" name="NewRecycle">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -488,6 +491,9 @@ border:2px solid rgb(200,200,200);</string>
       </property>
      </widget>
      <widget class="QPushButton" name="NewKitchen">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>115</x>
@@ -504,6 +510,9 @@ border:2px solid rgb(200,200,200);</string>
       </property>
      </widget>
      <widget class="QPushButton" name="NewHarmful">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -520,6 +529,9 @@ border:2px solid rgb(200,200,200);</string>
       </property>
      </widget>
      <widget class="QPushButton" name="NewOther">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>115</x>
@@ -585,6 +597,9 @@ border:2px solid rgb(200,200,200);</string>
       <string>模式切换</string>
      </property>
      <widget class="QPushButton" name="PreMode">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -666,6 +681,9 @@ border:2px solid rgb(200,200,200);</string>
       </property>
      </widget>
      <widget class="QPushButton" name="TakeTurns">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>10</x>

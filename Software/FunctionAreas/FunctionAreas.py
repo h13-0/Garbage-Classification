@@ -44,6 +44,10 @@ class Functions():
     def __preMode__(self):
         self.__ui__.PreMode.setStyleSheet(self.__enableStyleSheet__)
         self.__ui__.FinalMode.setStyleSheet(self.__disableStyleSheet__)
+
+        self.__ui__.PreMode.setEnabled(False)
+        self.__ui__.FinalMode.setEnabled(True)
+
         self.__detector__.switchMode("PreMode")
 
 
@@ -51,6 +55,10 @@ class Functions():
     def __finalMode__(self):
         self.__ui__.PreMode.setStyleSheet(self.__disableStyleSheet__)
         self.__ui__.FinalMode.setStyleSheet(self.__enableStyleSheet__)
+
+        self.__ui__.PreMode.setEnabled(True)
+        self.__ui__.FinalMode.setEnabled(False)
+
         self.__detector__.switchMode("FinalMode")
 
 
@@ -59,6 +67,11 @@ class Functions():
         self.__ui__.PlayVideo.setStyleSheet(self.__enableStyleSheet__)
         self.__ui__.PlayPhoto.setStyleSheet(self.__disableStyleSheet__)
         self.__ui__.TakeTurns.setStyleSheet(self.__disableStyleSheet__)
+
+        self.__ui__.PlayVideo.setEnabled(False)
+        self.__ui__.PlayPhoto.setEnabled(True)
+        self.__ui__.TakeTurns.setEnabled(True)
+
         self.__videoPlayer__.fromVideo()
 
 
@@ -67,6 +80,11 @@ class Functions():
         self.__ui__.PlayVideo.setStyleSheet(self.__disableStyleSheet__)
         self.__ui__.PlayPhoto.setStyleSheet(self.__enableStyleSheet__)
         self.__ui__.TakeTurns.setStyleSheet(self.__disableStyleSheet__)
+
+        self.__ui__.PlayVideo.setEnabled(True)
+        self.__ui__.PlayPhoto.setEnabled(False)
+        self.__ui__.TakeTurns.setEnabled(True)
+
         self.__videoPlayer__.fromFloder()
 
 
@@ -75,6 +93,11 @@ class Functions():
         self.__ui__.PlayVideo.setStyleSheet(self.__disableStyleSheet__)
         self.__ui__.PlayPhoto.setStyleSheet(self.__disableStyleSheet__)
         self.__ui__.TakeTurns.setStyleSheet(self.__enableStyleSheet__)
+
+        self.__ui__.PlayVideo.setEnabled(True)
+        self.__ui__.PlayPhoto.setEnabled(True)
+        self.__ui__.TakeTurns.setEnabled(False)
+
         self.__videoPlayer__.takeTurns()
 
     
@@ -117,6 +140,11 @@ class Functions():
 
     # 准备录入, 使四种垃圾的按钮全部生效
     def __enableAllKinds__(self):
+        self.__ui__.NewRecycle.setEnabled(True)
+        self.__ui__.NewKitchen.setEnabled(True)
+        self.__ui__.NewHarmful.setEnabled(True)
+        self.__ui__.NewOther.setEnabled(True)
+
         self.__ui__.NewRecycle.setStyleSheet(self.__enableStyleSheet__)
         self.__ui__.NewKitchen.setStyleSheet(self.__enableStyleSheet__)
         self.__ui__.NewHarmful.setStyleSheet(self.__enableStyleSheet__)
@@ -125,6 +153,11 @@ class Functions():
 
     # 录入完毕, 使四种垃圾的按钮全部失效
     def __disableAllKinds__(self):
+        self.__ui__.NewRecycle.setEnabled(False)
+        self.__ui__.NewKitchen.setEnabled(False)
+        self.__ui__.NewHarmful.setEnabled(False)
+        self.__ui__.NewOther.setEnabled(False)
+
         self.__ui__.NewRecycle.setStyleSheet(self.__disableStyleSheet__)
         self.__ui__.NewKitchen.setStyleSheet(self.__disableStyleSheet__)
         self.__ui__.NewHarmful.setStyleSheet(self.__disableStyleSheet__)

@@ -8,6 +8,7 @@ from QtUI.UI_Child import Ui_Main
 import sys
 import os
 import platform
+import argparse
 
 ## WorkingProcess
 from WorkingProcess.MainProcess import Process
@@ -25,8 +26,26 @@ def main():
     ui.setupUi(Mainw)
     Mainw.show()
 
+    # argparse
+    parser = argparse.ArgumentParser()
+    if(platform.system()=='Windows'):
+        parser.add_argument('--serial', type=str, default="COM3", help="Serial port")
+    elif(platform.system()=='Linux'):
+        parser.add_argument('--serial', type=str, help="Serial port")
+
+    parser.add_argument('--cam', type=int, default=0, help="Camrea ID")
+    
+    parser.add_argument('--thre', type=int, default=100, help="threshold Value")
+
+    parser.add_argument('--minArea', type=int, default=50, help="Minimum Area Of Object")
+
+    parser.add_argument('--retry', type=int, default=5, help="Maximum number of attempts")
+
+    args = parser.parse_args()
+
+
     # process
-    process = Process(ui, "COM3")
+    process = Process(ui, args.cam, args.serial, args.thre, args.minArea)
     
     sys.exit(app.exec_())
 
