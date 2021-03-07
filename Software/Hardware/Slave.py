@@ -55,40 +55,49 @@ class Slave():
 
                 # 挡板事件
                 elif(sp[0] == 'Baffle'):
-                    # 左侧挡板
-                    if(sp[1] == 'Left'):
-                        if(sp[2] == 'Opened'):
-                            # Do someting
-                            pass
+                    # 校验
+                    if(len(sp) == 3):
+                        # 左侧挡板
+                        if(sp[1] == 'Left'):
+                            if(sp[2] == 'Opened'):
+                                # Do someting
+                                pass
 
-                        elif(sp[2] == 'Closed'):
-                            # Do something
-                            pass
+                            elif(sp[2] == 'Closed'):
+                                # Do something
+                                pass
 
                         
 
-                    # 右侧挡板
-                    elif(sp[1] == 'Right'):
-                        if(sp[2] == 'Opened'):
-                            # Do someting
+                        # 右侧挡板
+                        elif(sp[1] == 'Right'):
+                            if(sp[2] == 'Opened'):
+                                # Do someting
+                                pass
+
+                            elif(sp[2] == 'Closed'):
+                                # Do something
+                                pass
+
+                        # 终端挡板
+                        elif(sp[1] == 'Middle'):
+                            if(sp[2] == 'Opened'):
+                                # Do someting
+                                pass
+
+                            elif(sp[2] == 'Closed'):
+                                # Do something
+                                pass
+
+                # 滑块事件
+                elif(sp[0] == 'Slider'):
+                    # 校验
+                    if(len(sp) == 2):
+                        if(sp[1] == 'OK'):
+                            # Do someThing
                             pass
 
-                        elif(sp[2] == 'Closed'):
-                            # Do something
-                            pass
 
-                    # 终端挡板
-                    elif(sp[1] == 'Middle'):
-                        if(sp[2] == 'Opened'):
-                            # Do someting
-                            pass
-
-                        elif(sp[2] == 'Closed'):
-                            # Do something
-                            pass
-
-
-        
     # 返回容量信息
     def getLoadTest(self):
         return self.__recycleLoad__, self.__kitchenLoad__, self.__harmfulLoad__, self.__otherLoad__
@@ -104,4 +113,7 @@ class Slave():
         # wait
 
     def conveyorForward(self):
-        self.__usart__.write(("Conveyor" + "Forward\r\n").encode("utf-8"))
+        self.__usart__.write(("Conveyor:" + "Forward\r\n").encode("utf-8"))
+
+    def sliderSend(self, classes):
+        self.__usart__.write(("Slider:" + classes + "\r\n").encode("utf-8"))

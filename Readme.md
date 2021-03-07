@@ -8,10 +8,35 @@
 ## 图像识别部分
 ### Xception 图像分类实现
 #### 模型训练
-
-请务必使用自己的摄像头针对自己的设备添加足够训练集之后再进行训练。
+请务必使用自己的摄像头针对自己的设备添加足够训练集之后再进行训练。  
+```
+cd Xception
+python ./Train.py
+```
+注意根据实际路径修改以下内容:  
+```
+# Configure
+# 以下内容请和 Valid.py 中的匹配
+## 源图片的总文件夹位置
+Base_Dir = "E:/TensorFlow/datasets/garbage_finally/"
+train_dir = Base_Dir + "Train"
+validation_dir = Base_Dir + "Valid"
+log_dir = "./log"
+```
 
 #### 模型校验
+```
+cd Xception
+python ./Valid.py
+```
+注意根据实际文件路径修改以下内容:  
+```
+# Configure
+## 源图片的总文件夹位置, 尽量保证输入图片的长宽比为1:1即可, 程序会自动缩放。
+Base_Dir   = '../../datasets/garbage_finally/'
+## 权重文件的位置
+Weight_File_Path = "./weights/epoch-140-val_acc-0.9651-acc_top3-1.0000-acc_top5-1.0000.hdf5"
+```
 
 #### 实时监测
 ```
@@ -19,6 +44,14 @@ cd Xception
 python ./Live.py
 ```
 至此, Xception图像分类部分完毕。但是仍然无法进行实际的图像识别流程, 原因如下文 `Xception具体操作流程`。
+
+#### TensorBoard绘图
+```
+cd Xception
+tensorboard --logdir ./log
+```
+然后根据提示访问对应网址即可
+![](./Xception/tensorboard.png)
 
 ### Xception具体操作流程
 由于图像分类无法对未知物体或无物体时的结果进行正确预测, 所以需要进行一些预处理。

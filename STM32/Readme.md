@@ -49,4 +49,17 @@ STM32端不发送任何消息
 ### 滑台云台信息
 此部分只负责把垃圾投送到对应垃圾桶
 
+Linux:
+```
+Slider:${class}
+```
+class即垃圾种类, `Recycle` `Kitchen` `Harmful` `Other`
+
+
+STM32:
+```
+Slider:OK
+```
+
+
 

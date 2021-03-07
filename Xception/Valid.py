@@ -11,13 +11,14 @@ from datetime import datetime
 # System API
 import os
 
+# Configure
 ## 源图片的总文件夹位置, 尽量保证输入图片的长宽比为1:1即可, 程序会自动缩放。
 Base_Dir   = '../../datasets/garbage_finally/'
-
-Base_Dir = Base_Dir + "Test"
-Image_Shape = (299,299)
 ## 权重文件的位置
 Weight_File_Path = "./weights/epoch-140-val_acc-0.9651-acc_top3-1.0000-acc_top5-1.0000.hdf5"
+
+Image_Shape = (299,299)
+Base_Dir = Base_Dir + "Test"
 
 # Load Images
 def LoadImages(Dir,label):
