@@ -10,7 +10,7 @@ static uint8_t USART1_RX_BUF[USART1_BUF_LEN];     //Ω” ’ª∫≥Â, ◊Ó¥ÛUSART_REC_LEN∏
 //bit15£¨	Ω” ’ÕÍ≥…±Í÷æ
 //bit14£¨	Ω” ’µΩ0x0d
 //bit13~0£¨	Ω” ’µΩµƒ”––ß◊÷Ω⁄ ˝ƒø
-static uint16_t USART1_RX_STA = 0;       //Ω” ’◊¥Ã¨±Íº«
+static uint16_t USART1_RX_STA = 0;       //Ω” ’◊¥Ã¨±Íº«	  
 
 //ReadLine Buf
 
@@ -24,8 +24,8 @@ inline void USART1_Handler(void)
 {
     u8 Res;
     Res = USART_ReceiveData(USART1);	//∂¡»°Ω” ’µΩµƒ ˝æ›
-    //Write Your Raw APIs here.
-    //
+		//Write Your Raw APIs here.
+		//
 
     if((USART1_RX_STA&0x8000)==0)//Ω” ’Œ¥ÕÍ≥…
     {
@@ -36,24 +36,24 @@ inline void USART1_Handler(void)
             else
             {
                 USART1_RX_STA |= 0x8000;	//Ω” ’ÕÍ≥…¡À
-
-#if USART1_READLINE
-                memcpy(USART1_ReadLine_BUF, USART1_RX_BUF, USART1_BUF_LEN);
-                USART1_ReadLine_LEN = USART1_RX_STA&0X3FFF;
-#endif
-
-                //Write Your Command APIs here.
-                //Command(USART1_RX_BUF, USART1_RX_STA&0X3FFF);
-
-                //Clear BUFFER
-                memset(USART1_RX_BUF, 0, USART1_BUF_LEN);
-                USART1_RX_STA = 0;
+							
+								#if USART1_READLINE
+								memcpy(USART1_ReadLine_BUF, USART1_RX_BUF, USART1_BUF_LEN);
+								USART1_ReadLine_LEN = USART1_RX_STA&0X3FFF;
+								#endif
+							
+								//Write Your Command APIs here.
+								//Command(USART1_RX_BUF, USART1_RX_STA&0X3FFF);
+							
+								//Clear BUFFER
+								memset(USART1_RX_BUF, 0, USART1_BUF_LEN);
+								USART1_RX_STA = 0;
             }
         }
         else //ªπ√ª ’µΩ0X0D
         {
             if(Res == 0x0d)
-                USART1_RX_STA|=0x4000;
+								USART1_RX_STA|=0x4000;
             else
             {
                 USART1_RX_BUF[USART1_RX_STA&0X3FFF]=Res ;
@@ -71,15 +71,15 @@ inline void USART1_Handler(void)
 #if USART1_READLINE
 uint16_t USART1_ReadLine(uint8_t* buf)
 {
-    if(USART1_ReadLine_LEN)
-    {
-        memcpy(buf, USART1_ReadLine_BUF, USART1_BUF_LEN);
-        uint16_t len = USART1_ReadLine_LEN;
-        USART1_ReadLine_LEN = 0;
-        //∑µªÿ ˝æ›≥§∂»
-        return len;
-    } else {
-        return 0;
-    }
+		if(USART1_ReadLine_LEN)
+		{
+				memcpy(buf, USART1_ReadLine_BUF, USART1_BUF_LEN);
+				uint16_t len = USART1_ReadLine_LEN;
+				USART1_ReadLine_LEN = 0;
+				//∑µªÿ ˝æ›≥§∂»
+				return len;
+		} else {
+				return 0;
+		}
 }
 #endif

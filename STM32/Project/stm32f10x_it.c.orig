@@ -1,11 +1,11 @@
 /**
   ******************************************************************************
-  * @file    Project/STM32F10x_StdPeriph_Template/stm32f10x_it.c
+  * @file    Project/STM32F10x_StdPeriph_Template/stm32f10x_it.c 
   * @author  MCD Application Team
   * @version V3.5.0
   * @date    08-April-2011
   * @brief   Main Interrupt Service Routines.
-  *          This file provides template for all exceptions handler and
+  *          This file provides template for all exceptions handler and 
   *          peripherals interrupt service routine.
   ******************************************************************************
   * @attention
@@ -58,10 +58,10 @@ void NMI_Handler(void)
   */
 void HardFault_Handler(void)
 {
-    /* Go to infinite loop when Hard Fault exception occurs */
-    while (1)
-    {
-    }
+  /* Go to infinite loop when Hard Fault exception occurs */
+  while (1)
+  {
+  }
 }
 
 /**
@@ -71,10 +71,10 @@ void HardFault_Handler(void)
   */
 void MemManage_Handler(void)
 {
-    /* Go to infinite loop when Memory Manage exception occurs */
-    while (1)
-    {
-    }
+  /* Go to infinite loop when Memory Manage exception occurs */
+  while (1)
+  {
+  }
 }
 
 /**
@@ -84,10 +84,10 @@ void MemManage_Handler(void)
   */
 void BusFault_Handler(void)
 {
-    /* Go to infinite loop when Bus Fault exception occurs */
-    while (1)
-    {
-    }
+  /* Go to infinite loop when Bus Fault exception occurs */
+  while (1)
+  {
+  }
 }
 
 /**
@@ -97,10 +97,10 @@ void BusFault_Handler(void)
   */
 void UsageFault_Handler(void)
 {
-    /* Go to infinite loop when Usage Fault exception occurs */
-    while (1)
-    {
-    }
+  /* Go to infinite loop when Usage Fault exception occurs */
+  while (1)
+  {
+  }
 }
 
 /**
@@ -137,32 +137,32 @@ void PendSV_Handler(void)
   */
 void SysTick_Handler(void)
 {
-    Systick_IQR();
+		Systick_IQR();
 }
 
 void USART1_IRQHandler(void)                	//串口1中断服务程序
 {
-    if(USART_GetITStatus(USART1, USART_IT_RXNE) != RESET)
-    {
-        USART1_Handler();
-    }
+		if(USART_GetITStatus(USART1, USART_IT_RXNE) != RESET)
+		{
+				USART1_Handler();
+		}
 }
 
 void EXTI15_10_IRQHandler(void)
 {
-    //Front
+		//Front
     if(EXTI_GetITStatus(EXTI_Line11) == 1) //读取中断标志位，确定中断真的发生
     {
         EXTI_ClearITPendingBit(EXTI_Line11); //清除中断标志位
-        Front_Limit_IRQHandler();
-    }
-
-    //Behind
-    if(EXTI_GetITStatus(EXTI_Line12) == 1) //读取中断标志位，确定中断真的发生
+				Front_Limit_IRQHandler();
+		}
+		
+		//Behind
+		if(EXTI_GetITStatus(EXTI_Line12) == 1) //读取中断标志位，确定中断真的发生
     {
         EXTI_ClearITPendingBit(EXTI_Line12); //清除中断标志位
-        Behind_Limit_IRQHandler();
-    }
+				Behind_Limit_IRQHandler();
+		}
 }
 
 /******************************************************************************/
@@ -183,7 +183,7 @@ void EXTI15_10_IRQHandler(void)
 
 /**
   * @}
-  */
+  */ 
 
 
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/

@@ -13,7 +13,7 @@ void USART1_Handler(void);
 /**
  * @brief: Gets USART1 buffer data.
  * @param: uint8_t* buffer.
- * @return: length of
+ * @return: length of 
  */
 uint16_t USART1_ReadLine(uint8_t* buf);
 #endif

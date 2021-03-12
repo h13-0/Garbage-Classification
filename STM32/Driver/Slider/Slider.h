@@ -11,6 +11,7 @@
 #define SLIDER_DIR_PIN    GPIO_Pin_13
 #define SLIDER_STEP_PORT  GPIOC
 #define SLIDER_STEP_PIN   GPIO_Pin_14
+#define DELAY_PER_HALF_SETP 5000
 
 //Servo
 //#define SLIDER_SERVO_INIT() 
@@ -19,7 +20,17 @@
 #define MIDDLE_ANGLE 158
 #define RIGHT_ANGLE  240
 
-void SliderTest(void);
+//Limit sensor
+#define LIMIT_SENSOR_RCC_ENABLE() RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE)
+#define LIMIT_SENDOR_GPIO_MODE GPIO_Mode_IPD
+
+#define FORWARD_TRIGGRR_PORT GPIOA
+#define FORWARD_TRIGGRR_PIN  GPIO_Pin_11
+
+#define BACKWARD_TRIGGRR_PORT GPIOA
+#define BACKWARD_TRIGGRR_PIN  GPIO_Pin_12
+
+#define TRIGGERED_LEVEL Bit_SET
 
 //APIs
 
