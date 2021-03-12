@@ -337,7 +337,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F10X_MD,USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>..\Core;..\Project;..\Stm32F10x_FWLIB\inc;..\Driver\MPU6050;..\Driver\MPU6050\eMPL;..\Driver\OLED12864_I2C;..\Hardware;..\Software\ANO_tc;..\Software\BLUEROCKER;..\Software\PID;..\Software\sys;..\Software\usart;..\Software\USMART;..\Driver\H-Bridge;..\Driver\Holder;..\Driver\MLX90614;..\Driver\ST7789V_240x240_Intel8080;..\Driver\Ultrasonic_Ranging;..\Driver\VL53L0X\core\inc;..\Driver\VL53L0X\platform\inc;..\Hardware\Intel8080;..\Software\SystemClock;..\Hardware\SoftI2C;..\Software\Bit_operation</IncludePath>
+              <IncludePath>..\Core;..\Project;..\Stm32F10x_FWLIB\inc;..\Hardware;..\Software\ANO_tc;..\Software\BLUEROCKER;..\Software\PID;..\Software\sys;..\Software\usart;..\Software\USMART;..\Driver\Ultrasonic_Ranging;..\Software\SystemClock;..\Software\Bit_operation;..\Hardware\TIM;..\Driver\Stepper;..\Hardware\FreeIO;..\Driver\Hall_Sensor;..\Driver\Slider</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -397,99 +397,19 @@
           <GroupName>Driver</GroupName>
           <Files>
             <File>
-              <FileName>mpu6050.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Driver\MPU6050\mpu6050.c</FilePath>
-            </File>
-            <File>
-              <FileName>mpuiic.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Driver\MPU6050\mpuiic.c</FilePath>
-            </File>
-            <File>
-              <FileName>inv_mpu.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Driver\MPU6050\eMPL\inv_mpu.c</FilePath>
-            </File>
-            <File>
-              <FileName>inv_mpu_dmp_motion_driver.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Driver\MPU6050\eMPL\inv_mpu_dmp_motion_driver.c</FilePath>
-            </File>
-            <File>
-              <FileName>OLED_I2C.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Driver\OLED12864_I2C\OLED_I2C.c</FilePath>
-            </File>
-            <File>
-              <FileName>H-Bridge.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Driver\H-Bridge\H-Bridge.c</FilePath>
-            </File>
-            <File>
-              <FileName>holder.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Driver\Holder\holder.c</FilePath>
-            </File>
-            <File>
-              <FileName>mlx90614.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Driver\MLX90614\mlx90614.c</FilePath>
-            </File>
-            <File>
               <FileName>Ultrasonic_Ranging.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Driver\Ultrasonic_Ranging\Ultrasonic_Ranging.c</FilePath>
             </File>
             <File>
-              <FileName>vl53l0x_api.c</FileName>
+              <FileName>Stepper.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Driver\VL53L0X\core\src\vl53l0x_api.c</FilePath>
+              <FilePath>..\Driver\Stepper\Stepper.c</FilePath>
             </File>
             <File>
-              <FileName>vl53l0x_api_calibration.c</FileName>
+              <FileName>Slider.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Driver\VL53L0X\core\src\vl53l0x_api_calibration.c</FilePath>
-            </File>
-            <File>
-              <FileName>vl53l0x_api_core.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Driver\VL53L0X\core\src\vl53l0x_api_core.c</FilePath>
-            </File>
-            <File>
-              <FileName>vl53l0x_api_ranging.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Driver\VL53L0X\core\src\vl53l0x_api_ranging.c</FilePath>
-            </File>
-            <File>
-              <FileName>vl53l0x_api_strings.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Driver\VL53L0X\core\src\vl53l0x_api_strings.c</FilePath>
-            </File>
-            <File>
-              <FileName>vl53l0x_easy_api.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Driver\VL53L0X\core\src\vl53l0x_easy_api.c</FilePath>
-            </File>
-            <File>
-              <FileName>vl53l0x_it.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Driver\VL53L0X\core\src\vl53l0x_it.c</FilePath>
-            </File>
-            <File>
-              <FileName>ST7789V_240x240_Intel8080.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Driver\ST7789V_240x240_Intel8080\ST7789V_240x240_Intel8080.c</FilePath>
-            </File>
-            <File>
-              <FileName>vl53l0x_i2c.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Driver\VL53L0X\platform\src\vl53l0x_i2c.c</FilePath>
-            </File>
-            <File>
-              <FileName>vl53l0x_platform.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Driver\VL53L0X\platform\src\vl53l0x_platform.c</FilePath>
+              <FilePath>..\Driver\Slider\Slider.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -497,14 +417,19 @@
           <GroupName>Hardware</GroupName>
           <Files>
             <File>
-              <FileName>Intel8080.c</FileName>
+              <FileName>TIM_Init.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Hardware\Intel8080\Intel8080.c</FilePath>
+              <FilePath>..\Hardware\TIM\TIM_Init.c</FilePath>
             </File>
             <File>
-              <FileName>SoftI2C.c</FileName>
+              <FileName>FreeIO.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Hardware\SoftI2C\SoftI2C.c</FilePath>
+              <FilePath>..\Hardware\FreeIO\FreeIO.c</FilePath>
+            </File>
+            <File>
+              <FileName>Hall_Sensor.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Driver\Hall_Sensor\Hall_Sensor.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -525,6 +450,16 @@
               <FileName>system_stm32f10x.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\system_stm32f10x.c</FilePath>
+            </File>
+            <File>
+              <FileName>USART1_IRQ.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\USART1_IRQ.c</FilePath>
+            </File>
+            <File>
+              <FileName>Commands.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Commands.c</FilePath>
             </File>
           </Files>
         </Group>
