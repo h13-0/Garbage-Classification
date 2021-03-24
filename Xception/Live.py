@@ -13,7 +13,7 @@ import time
 Image_Shape = (299,299)
 ## 权重文件的位置
 Weight_File_Path = "./Result977/Result.hdf5"
-Class_name = ['Battery','Brokenceramics','Cans','Cigarettebutts','Drug','Fruit','Paper','Tile','Vegetables','Walterbottles']
+Class_name = ['Battery','Brokenceramics','Cans','Cigarettebutts','Fruit','Paper','Tile','Vegetables','Walterbottles']
 
 frame = np.zeros((1,1), np.uint8)
 framelock = threading.Lock()

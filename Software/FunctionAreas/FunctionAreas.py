@@ -3,11 +3,17 @@
 from ImageProcessing.VideoPlayer import VideoPlayer
 from ImageProcessing.Detector import Detector
 
+# import Working mode definition
+from WorkingProcess.WorkingMode import Mode
+
 class Functions():
     def __init__(self, ui, videoPlayer, detector):
         self.__ui__ = ui
         self.__videoPlayer__ = videoPlayer
         self.__detector__ = detector
+
+        # 当前模式
+        self.__mode__ = Mode['preMode']
 
         # 颜色设置
         self.__enableStyleSheet__ = "background-color: #FFFFFF;"
@@ -21,6 +27,9 @@ class Functions():
         self.__ui__.PlayVideo.clicked.connect(lambda:self.__playVideo__())
         self.__ui__.PlayPhoto.clicked.connect(lambda:self.__playPhoto__())
         self.__ui__.TakeTurns.clicked.connect(lambda:self.__takeTurns__())
+
+        # 背景阈值Slider
+        self.__ui__.threSlider.valueChanged.connect(lambda:self.__threValueChanged__())
 
         # 录入新垃圾
         self.__ui__.ReadyToRecord.clicked.connect(lambda:self.__readyToRecord__())
@@ -40,6 +49,11 @@ class Functions():
         self.__ui__.NewOther.clicked.connect(lambda:self.__newOther__())
 
 
+    # 获取当前模式
+    def getCurrentMode(self):
+        return self.__mode__
+
+
     # 切换为初赛模式
     def __preMode__(self):
         self.__ui__.PreMode.setStyleSheet(self.__enableStyleSheet__)
@@ -48,7 +62,9 @@ class Functions():
         self.__ui__.PreMode.setEnabled(False)
         self.__ui__.FinalMode.setEnabled(True)
 
-        self.__detector__.switchMode("PreMode")
+        self.__mode__ = Mode['preMode']
+
+        self.__detector__.switchMode(self.__mode__)
 
 
     # 切换为决赛模式
@@ -59,7 +75,9 @@ class Functions():
         self.__ui__.PreMode.setEnabled(True)
         self.__ui__.FinalMode.setEnabled(False)
 
-        self.__detector__.switchMode("FinalMode")
+        self.__mode__ = Mode['finalMode']
+
+        self.__detector__.switchMode(self.__mode__)
 
 
     # 切换为视频播放模式
@@ -101,6 +119,10 @@ class Functions():
         self.__videoPlayer__.takeTurns()
 
     
+    def __threValueChanged__(self):
+        self.__detector__.setThreValue(self.__ui__.threSlider.value())
+
+
     # 准备录入新垃圾
     def __readyToRecord__(self):
         self.__ui__.ReadyToRecord.setStyleSheet(self.__disableStyleSheet__)

@@ -14,30 +14,42 @@ import threading, signal
 import os
 import time
 
+# import resize tool
+from ImageProcessing.ResizeTo import ResizeTo
+
 class Detector(threading.Thread, QWidget):
-    # 结果输出用editText的信号槽
-    __outputSignal__ = pyqtSignal([str])
- 
     def __init__(self, ui, cameraID, threValue, weigthFile, className):
         threading.Thread.__init__(self)
         QWidget.__init__(self)
         
+        # UI和摄像头
         self.__qlabel__ = ui.frame_label
         self.cameraID = cameraID
 
+        # 背景阈值相关参数
         self.threValue = threValue
         self.threValueLock = threading.Lock()
 
-        self.className = className
+        # 目标物体所在Rect
+        ## 选择是否绘出Rect, 共用一个锁即可
+        self.__drawRect__ = False
 
-        '''
-        # PreMode   初赛模式 -> 即一次投入一个垃圾
-        # FinalMode 决赛模式 -> 即一次投入两个垃圾
-        '''
-        self.mode = "PreMode"
+        ## 目标所在方框
+        self.__rect__ = None
+        self.__rectLock__ = threading.Lock()
 
-        # 连接信号
-        self.__outputSignal__.connect(ui.outputResult)
+        # label和种类信息
+        self.__className__ = className
+
+        # 输出结果, 共用一个锁即可
+        ## 选择是否在图像中标出结果
+        self.__drawResult__ = False
+
+        ## 推演出的结果
+        self.__nameResult__ = None
+        self.__probabilityResult__ = None
+        self.__resultLock__ = threading.Lock()
+
 
         # Camera
         self.__capLock__ = threading.Lock()
@@ -62,9 +74,6 @@ class Detector(threading.Thread, QWidget):
             tf.config.experimental.set_memory_growth(physical_device, True)
         self.__model__ = tf.keras.applications.Xception(include_top=True,weights=weigthFile,input_shape=(299,299,3),classes=len(className),pooling="avg")
 
-        # 加载完毕
-        self.__outputSignal__.emit("加载完毕")
-
 
     # 获取单帧图像
     def getFrame(self):
@@ -88,6 +97,33 @@ class Detector(threading.Thread, QWidget):
         while True:
             self.__displayFlag__.wait()
             image = self.getFrame()
+
+            # 获取是否需要画出方框
+            ## TODO: 支持多方框
+            rect = None
+            with self.__rectLock__:
+                if(self.__drawRect__):
+                    rect = self.__rect__
+
+            # 获取是否需要画出结果
+            ## TODO: 支持多结果
+            nameResult = None
+            probabilityResult = None
+
+            with self.__resultLock__:
+                if(self.__drawResult__):
+                    nameResult = self.__nameResult__
+                    probabilityResult = self.__probabilityResult__
+
+            # 绘制方框
+            if(not rect is None):
+                image = cv.rectangle(image, self.__rect__, (0, 255, 0), 2)
+
+            # 绘制结果
+            if(not nameResult is None):
+                image = cv.putText(image, nameResult + " " + probabilityResult, (rect[0], rect[1] - 4), cv.FONT_HERSHEY_SIMPLEX, 0.75, (0, 255, 0), 2)
+                pass
+
             image = cv.cvtColor(image, cv.COLOR_BGR2RGB)
             qImage = QImage(image.data, 640, 480, 640 * 3, QImage.Format_RGB888)
             self.__qlabel__.setPixmap(QPixmap.fromImage(qImage))
@@ -136,7 +172,7 @@ class Detector(threading.Thread, QWidget):
         thre = None
         # threshold
         with self.threValueLock:
-            ret, thre = cv.threshold(frame, threValueLock, 255, cv.THRESH_TOZERO)
+            ret, thre = cv.threshold(frame, self.threValue, 255, cv.THRESH_TOZERO)
 
         # erode
         kernel = np.ones((5,5),np.uint8) 
@@ -150,33 +186,48 @@ class Detector(threading.Thread, QWidget):
 
         # output maximum area
         maxArea = 0
+        maxContour = None
         for contour in Contours:
             area = cv.contourArea(contour)
-            if(area > leftArea):
+            if(area > maxArea):
                 maxArea = area
+                maxContour = contour
 
         # output Rect of Item
-        rect = None
+        with self.__rectLock__:
+            self.__rect__ = cv.boundingRect(maxContour)
 
-        return maxArea, rect
+            return maxArea, self.__rect__
 
 
-    def switchMode(self, mode = "PreMode"):
-        if((mode == 'PreMode') or (mode == 'FinalMode')):
-            self.mode = mode
-    
+    # 选择是否需要画出方框
+    def drawRect(self, value):
+        with self.__rectLock__:
+            self.__drawRect__ = value
+
+
+    # 选择是否在图像中标出结果
+    def drawResult(self, value):
+        with self.__resultLock__:
+            self.__drawResult__ = value
         
+
     # 预测种类
-    def predict(self):
-        imgList = self.getSplitedFrame()
+    # return: Name, classes, probability
+    def predict(self, frame):
+        frame = ResizeTo(frame, 299)
+        frame = frame.astype(np.float32) / 255.0
+        imgList = []
+        imgList.append(frame)
         imgs = np.array(imgList)
 
         predictions = self.__model__.predict(imgs)
 
-        self.__outputSignal__.emit(
-            "左侧: " + self.className[np.argmax(predictions[0])][0] + ", 是: " + self.className[np.argmax(predictions[0])][1] + " " + str(100*np.max(predictions[0])) + "%" + '\r\n' + 
-            "右侧: " + self.className[np.argmax(predictions[1])][0] + ", 是: " + self.className[np.argmax(predictions[1])][1] + " " + str(100*np.max(predictions[1])) + "%"
-        )
+        with self.__resultLock__:
+            self.__nameResult__ = self.__className__[np.argmax(predictions[0])][1]
+            self.__probabilityResult__ = str(100*np.max(predictions[0])) + "%"
+            
+            return self.__className__[np.argmax(predictions[0])][0], self.__className__[np.argmax(predictions[0])][2], self.__probabilityResult__
     
 
     # 录入新的物体(模板匹配)

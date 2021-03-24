@@ -23,7 +23,14 @@ from FunctionAreas.FunctionAreas import Functions
 ## Hardware
 from Hardware.Slave import Slave
 
+# import Working mode definition
+from WorkingProcess.WorkingMode import Mode
+
 class Process(QWidget):
+    # 结果输出用editText的信号槽
+    __outputSignal__ = pyqtSignal([str])
+    
+    # Detector加载完毕的信号槽
     __detectorOkSignal__ = pyqtSignal()
 
     def __init__(self, ui, cam, com, thre, minArea):
@@ -35,8 +42,11 @@ class Process(QWidget):
         self.thre = thre
 
         self.functions = None
+
         # 设置信号
         self.__detectorOkSignal__.connect(lambda:self.__detectorInited__())
+        
+        self.__outputSignal__.connect(ui.outputResult)
     
         # 创建一个新线程以初始化Detector
         self.__detector__ = None
@@ -57,28 +67,58 @@ class Process(QWidget):
     # 主要逻辑部分
     def __main__(self):
         # Write your Code Here:
-        self.__videoPlayer__.pause()
-        self.__detector__.show()
+        self.__detector__.drawRect(True)
+        self.__detector__.drawResult(True)
         while True:
-            
+            if(self.__functions__.getCurrentMode() == Mode['preMode']):
+                # 单分类模式
+                maxArea, rect = self.__detector__.hasObject(self.__detector__.getFrame())
+                if(maxArea < 1000):
+                    self.__detector__.pause()
+                    self.__videoPlayer__.resume()
+                    self.__outputSignal__.emit("正在等待被测物体...")
+                    time.sleep(0.1)
 
+                else:
+                    # 物体大小大于阈值, 触发检测
+                    self.__videoPlayer__.pause()
+                    self.__detector__.show()
 
-            # Slider 5秒超时一般没啥问题
+                    name, classes, probability = self.__detector__.predict(self.__detector__.getFrame())
 
+                    self.__outputSignal__.emit(
+                        name + ", 是: " + classes + " " + probability
+                    )
 
-            pass
+                    # Do sth.
+                    
+
+            elif(self.__functions__.getCurrentMode() == Mode['finalMode']):
+                # 多分类模式
+                '''
+                self.__outputSignal__.emit(
+                    "左侧: " + self.__className__[np.argmax(predictions[0])][0] + ", 是: " + self.__className__[np.argmax(predictions[0])][1] + " " + str(100*np.max(predictions[0])) + "%" + '\r\n' + 
+                    "右侧: " + self.__className__[np.argmax(predictions[1])][0] + ", 是: " + self.__className__[np.argmax(predictions[1])][1] + " " + str(100*np.max(predictions[1])) + "%"
+                )
+                '''
+                pass
 
 
     # 子线程初始化detector
     def __detectorInit__(self):
         # 初始化Detector
         with self.__detectorLock__:
-            className = [ ['电池', '有害垃圾'] , ['碎瓷片', '其他垃圾'] , ['易拉罐', '可回收垃圾'] , ['烟蒂', '其他垃圾'] , ['药物', '有害垃圾'] ,
-                    ['水果', '厨余垃圾'] , ['纸张', '可回收垃圾'], ['碎砖块', '其他垃圾'] , ['蔬菜', '厨余垃圾'] , ['水瓶', '可回收垃圾'] ]
+            ## 由于OpenCV无法正确显示中文, 并且比赛要求显示中文, 所以只能中英同时使用...
+            className = [ ['电池', 'Battery', '有害垃圾'], ['碎瓷片', 'Brokenceramics', '其他垃圾'], ['易拉罐', 'Can', '可回收垃圾'], 
+                ['烟蒂', 'Cigarettebutts', '其他垃圾'], ['水果', 'Fruit', '厨余垃圾'], ['纸张', 'Paper', '可回收垃圾'], 
+                ['碎砖块', 'Tile', '其他垃圾'], ['蔬菜', 'Vegetables', '厨余垃圾'], ['水瓶', 'Walterbottles', '可回收垃圾'] ]
             self.__detector__ = Detector(self.__ui__, self.__cam__, self.thre, "./weight/Result.hdf5", className)
 
         # 发送Detector加载完毕的信号
         self.__detectorOkSignal__.emit()
+
+        # 加载完毕
+        self.__outputSignal__.emit("加载完毕")
 
 
     # Detector加载完毕后执行以下内容
