@@ -4,6 +4,9 @@ import serial
 # import Helper libs
 import threading
 
+# import Helper libs
+import time
+
 class Slave():
     def __init__(self, com):
         self.__usart__ = serial.Serial(com, 115200, timeout=None)
@@ -18,6 +21,9 @@ class Slave():
         self.__receiveThread__ = threading.Thread(target=self.__receive__)
         self.__receiveThread__.setDaemon(True)
         self.__receiveThread__.start()
+
+        self.__isSliderOK__ = False
+        self.__SliderOKLock__ = threading.Lock()
 
 
     def __receive__(self):
@@ -68,7 +74,6 @@ class Slave():
                                 pass
 
                         
-
                         # 右侧挡板
                         elif(sp[1] == 'Right'):
                             if(sp[2] == 'Opened'):
@@ -95,6 +100,8 @@ class Slave():
                     if(len(sp) == 2):
                         if(sp[1] == 'OK'):
                             # Do someThing
+                            with self.__SliderOKLock__:
+                                self.isSliderOK = True
                             pass
 
 
@@ -102,12 +109,45 @@ class Slave():
     def getLoadTest(self):
         return self.__recycleLoad__, self.__kitchenLoad__, self.__harmfulLoad__, self.__otherLoad__
 
+
+    # 托盘运送垃圾
+    ## 懒得用阻塞了 直接等待就行
+    def sendRecycle(self, timeout = 5):
+        return self.__sendGarbage__("Recycle", timeout)
+
+
+    def sendKitchen(self, timeout = 5):
+        return self.__sendGarbage__("Kitchen", timeout)
+
+
+    def sendHarmful(self, timeout = 5):
+        return self.__sendGarbage__("Harmful", timeout)
+
+
+    def sendOther(self, timeout = 5):
+        return self.__sendGarbage__("Other", timeout)
+
     
+    def __sendGarbage__(self, classes, timeout):
+        startTime = time.time()
+        with self.__SliderOKLock__:
+            self.isSliderOK = False
+        
+        self.__usart__.write(("Slider:" + classes).encode("utf-8"))
+        while((time.time() - startTime < timeout*1000) or not self.isSliderOK):
+            time.sleep(0.1)
+
+        with self.__SliderOKLock__:
+            return self.__isSliderOK__
+
+
+    # 开挡板
     def openBaffle(self, target, timeout):
         self.__usart__.write(("Baffle:" + target + "Open\r\n").encode("utf-8"))
         # wait
 
     
+    # 关挡板
     def closeBaffle(self, target, timeout):
         self.__usart__.write(("Baffle:" + target + "Close\r\n").encode("utf-8"))
         # wait
@@ -117,3 +157,4 @@ class Slave():
 
     def sliderSend(self, classes):
         self.__usart__.write(("Slider:" + classes + "\r\n").encode("utf-8"))
+

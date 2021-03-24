@@ -28,11 +28,14 @@ void SliderInit()
 
 void SliderReset()
 {
+		if(GPIO_ReadInputDataBit(BACKWARD_TRIGGRR_PORT,BACKWARD_TRIGGRR_PIN) == TRIGGERED_LEVEL)
+			return;
+		
 		Stepper_BackwardMode(&stepperSlider);
 		
 		for(uint16_t i = 0; i < STEP_LIMIT; i++)
 		{
-				Stepper_SingleStep(&stepperSlider, DELAY_PER_HALF_SETP);
+				Stepper_SingleStep(&stepperSlider, SLIDER_DELAY_PER_HALF_SETP);
 				if(GPIO_ReadInputDataBit(BACKWARD_TRIGGRR_PORT,BACKWARD_TRIGGRR_PIN) == TRIGGERED_LEVEL)
 						break;
 		}
@@ -40,34 +43,34 @@ void SliderReset()
 
 void RecyclableWaste()
 {
+		SLIDER_SERVO_ROTATE(RIGHT_ANGLE);
+		delay_ms(SLIDER_DELAY);
 		SLIDER_SERVO_ROTATE(MIDDLE_ANGLE);
-		Stepper_Forward(&stepperSlider, STEP_LIMIT, DELAY_PER_HALF_SETP);
-		SLIDER_SERVO_ROTATE(LEFT_ANGLE);
-		delay_ms(500);
-		SLIDER_SERVO_ROTATE(MIDDLE_ANGLE);
-		Stepper_Backward(&stepperSlider, STEP_LIMIT, DELAY_PER_HALF_SETP);
 }
 
 void KitchenWaste()
 {
 		SLIDER_SERVO_ROTATE(MIDDLE_ANGLE);
-		Stepper_Forward(&stepperSlider, STEP_LIMIT, DELAY_PER_HALF_SETP);
+		Stepper_Forward(&stepperSlider, STEP_LIMIT, SLIDER_DELAY_PER_HALF_SETP);
 		SLIDER_SERVO_ROTATE(RIGHT_ANGLE);
-		delay_ms(500);
+		delay_ms(SLIDER_DELAY);
 		SLIDER_SERVO_ROTATE(MIDDLE_ANGLE);
-		Stepper_Backward(&stepperSlider, STEP_LIMIT, DELAY_PER_HALF_SETP);
+		Stepper_Backward(&stepperSlider, STEP_LIMIT, SLIDER_DELAY_PER_HALF_SETP);
 }
 
 void OtherWaste()
 {
-		SLIDER_SERVO_ROTATE(LEFT_ANGLE);
-		delay_ms(500);
 		SLIDER_SERVO_ROTATE(MIDDLE_ANGLE);
+		Stepper_Forward(&stepperSlider, STEP_LIMIT, SLIDER_DELAY_PER_HALF_SETP);
+		SLIDER_SERVO_ROTATE(LEFT_ANGLE);
+		delay_ms(SLIDER_DELAY);
+		SLIDER_SERVO_ROTATE(MIDDLE_ANGLE);
+		Stepper_Backward(&stepperSlider, STEP_LIMIT, SLIDER_DELAY_PER_HALF_SETP);
 }
 
 void HarmfulWaste()
 {
-		SLIDER_SERVO_ROTATE(RIGHT_ANGLE);
-		delay_ms(500);
+		SLIDER_SERVO_ROTATE(LEFT_ANGLE);
+		delay_ms(SLIDER_DELAY);
 		SLIDER_SERVO_ROTATE(MIDDLE_ANGLE);
 }

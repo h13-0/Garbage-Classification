@@ -18,12 +18,16 @@ class Detector(threading.Thread, QWidget):
     # 结果输出用editText的信号槽
     __outputSignal__ = pyqtSignal([str])
  
-    def __init__(self, ui, cameraID, weigthFile, className):
+    def __init__(self, ui, cameraID, threValue, weigthFile, className):
         threading.Thread.__init__(self)
         QWidget.__init__(self)
         
         self.__qlabel__ = ui.frame_label
         self.cameraID = cameraID
+
+        self.threValue = threValue
+        self.threValueLock = threading.Lock()
+
         self.className = className
 
         '''
@@ -122,9 +126,12 @@ class Detector(threading.Thread, QWidget):
 
 
     # 检测垃圾是否被放置
-    def hasObject(self):
+    def hasObject(self, frame):
+        ret = False
+        thre = None
         # threshold
-        ret, thre = cv.threshold(self.getFrame(), 100, 255, cv.THRESH_TOZERO)
+        with self.threValueLock:
+            ret, thre = cv.threshold(frame, threValueLock, 255, cv.THRESH_TOZERO)
 
         # erode
         kernel = np.ones((5,5),np.uint8) 
@@ -132,28 +139,18 @@ class Detector(threading.Thread, QWidget):
 
         # BGR To Gray
         gray = cv.cvtColor(erosion, cv.COLOR_BGR2GRAY)
-
-        # Split image
-        left, right = self.getSplitedFrame(gray)
         
         # findContours
-        leftContours, leftHierarchy = cv.findContours(left, cv.RETR_TREE, cv.CHAIN_APPROX_NONE)
-        rightContours, rightHierarchy = cv.findContours(right, cv.RETR_TREE, cv.CHAIN_APPROX_NONE)
+        Contours, Hierarchy = cv.findContours(gray, cv.RETR_TREE, cv.CHAIN_APPROX_NONE)
 
         # output maximum area
-        leftArea = 0
-        for contour in leftContours:
+        maxArea = 0
+        for contour in Contours:
             area = cv.contourArea(contour)
             if(area > leftArea):
-                leftArea = area
-        
-        rightArea = 0
-        for contour in rightContours:
-            area = cv.contourArea(contour)
-            if(area > rightArea):
-                rightArea = area
+                maxArea = area
 
-        return leftArea, rightArea
+        return maxArea
 
 
     def switchMode(self, mode = "PreMode"):
@@ -177,3 +174,9 @@ class Detector(threading.Thread, QWidget):
     # 录入新的物体(模板匹配)
     def newObject(self):
         pass
+
+
+    # 设置背景阈值
+    def setThreValue(self, value):
+        with self.threValueLock:
+            self.threValue = value

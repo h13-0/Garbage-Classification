@@ -1,12 +1,17 @@
+/**********C语言标准库**********/
 #include "string.h"
 
+/**********STM32标准库**********/
 #include "stm32f10x.h"
 
+/**********项目所需库***********/
 #include "SystemClock.h"
 #include "usart.h"
 #include "TIM_Init.h"
 #include "Slider.h"
 #include "USART1_IRQ.h"
+#include "Timer3.h"
+#include "Conveyor.h"
 
 //#define STM32_PROJRCT_DEBUG
 
@@ -20,10 +25,16 @@ int main()
 
     //由于TIM4是多个组件共用的, 所以先初始化TIM4
     TIM4_PWM_Init(1999, 719);
+	
+		//初始化容量检测器
+		CapacityDetectorInit();
 
     //初始化Slider
     SliderInit();
-
+	
+		ConveyorInit();
+		ConveyorForward();
+	
     while(1)
     {
         uint8_t buf[USART1_BUF_LEN];

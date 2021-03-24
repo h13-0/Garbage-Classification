@@ -459,9 +459,9 @@ background-color: #EDEDED;</string>
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>355</y>
+       <y>400</y>
        <width>221</width>
-       <height>265</height>
+       <height>220</height>
       </rect>
      </property>
      <property name="styleSheet">
@@ -478,9 +478,9 @@ border:2px solid rgb(200,200,200);</string>
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>105</y>
+        <y>90</y>
         <width>95</width>
-        <height>70</height>
+        <height>55</height>
        </rect>
       </property>
       <property name="styleSheet">
@@ -497,9 +497,9 @@ border:2px solid rgb(200,200,200);</string>
       <property name="geometry">
        <rect>
         <x>115</x>
-        <y>105</y>
+        <y>90</y>
         <width>95</width>
-        <height>70</height>
+        <height>55</height>
        </rect>
       </property>
       <property name="styleSheet">
@@ -516,9 +516,9 @@ border:2px solid rgb(200,200,200);</string>
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>185</y>
+        <y>155</y>
         <width>95</width>
-        <height>70</height>
+        <height>55</height>
        </rect>
       </property>
       <property name="styleSheet">
@@ -535,9 +535,9 @@ border:2px solid rgb(200,200,200);</string>
       <property name="geometry">
        <rect>
         <x>115</x>
-        <y>185</y>
+        <y>155</y>
         <width>95</width>
-        <height>70</height>
+        <height>55</height>
        </rect>
       </property>
       <property name="styleSheet">
@@ -553,7 +553,7 @@ border:2px solid rgb(200,200,200);</string>
         <x>115</x>
         <y>25</y>
         <width>95</width>
-        <height>70</height>
+        <height>55</height>
        </rect>
       </property>
       <property name="styleSheet">
@@ -569,7 +569,7 @@ border:2px solid rgb(200,200,200);</string>
         <x>10</x>
         <y>25</y>
         <width>95</width>
-        <height>70</height>
+        <height>55</height>
        </rect>
       </property>
       <property name="styleSheet">
@@ -638,7 +638,7 @@ border:2px solid rgb(200,200,200);</string>
        <x>10</x>
        <y>130</y>
        <width>220</width>
-       <height>215</height>
+       <height>260</height>
       </rect>
      </property>
      <property name="styleSheet">
@@ -697,6 +697,38 @@ border:2px solid rgb(200,200,200);</string>
       </property>
       <property name="text">
        <string>轮流播放</string>
+      </property>
+     </widget>
+     <widget class="QSlider" name="threSlider">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>230</y>
+        <width>200</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <property name="maximum">
+       <number>255</number>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label">
+      <property name="geometry">
+       <rect>
+        <x>15</x>
+        <y>210</y>
+        <width>72</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border:0px solid rgb(200,200,200);</string>
+      </property>
+      <property name="text">
+       <string>背景阈值</string>
       </property>
      </widget>
     </widget>

@@ -57,6 +57,12 @@ class Process(QWidget):
     def __main__(self):
         # Write your Code Here:
         while True:
+            
+
+
+            # Slider 5秒超时一般没啥问题
+
+
             pass
 
 

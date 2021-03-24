@@ -25,7 +25,7 @@
 #include "stm32f10x_it.h"
 #include "SystemClock.h"
 #include "USART1_IRQ.h"
-#include "Hall_Sensor.h"
+#include "Timer3.h"
 
 /** @addtogroup STM32F10x_StdPeriph_Template
   * @{
@@ -148,20 +148,12 @@ void USART1_IRQHandler(void)                	//串口1中断服务程序
     }
 }
 
-void EXTI15_10_IRQHandler(void)
+void TIM3_IRQHandler(void)
 {
-    //Front
-    if(EXTI_GetITStatus(EXTI_Line11) == 1) //读取中断标志位，确定中断真的发生
+    if (TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET)
     {
-        EXTI_ClearITPendingBit(EXTI_Line11); //清除中断标志位
-        Front_Limit_IRQHandler();
-    }
-
-    //Behind
-    if(EXTI_GetITStatus(EXTI_Line12) == 1) //读取中断标志位，确定中断真的发生
-    {
-        EXTI_ClearITPendingBit(EXTI_Line12); //清除中断标志位
-        Behind_Limit_IRQHandler();
+        TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
+        Timer3_IQR();
     }
 }
 
