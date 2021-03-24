@@ -91,7 +91,12 @@ class Detector(threading.Thread, QWidget):
             image = cv.cvtColor(image, cv.COLOR_BGR2RGB)
             qImage = QImage(image.data, 640, 480, 640 * 3, QImage.Format_RGB888)
             self.__qlabel__.setPixmap(QPixmap.fromImage(qImage))
-            time.sleep(0.02)
+            time.sleep(0.03)
+
+
+    # 预处理图像, 用黑色方块覆盖机械部分
+    def __preprocessImage__(self, img):
+        pass
 
 
     # 将Frame左右分割
@@ -150,7 +155,10 @@ class Detector(threading.Thread, QWidget):
             if(area > leftArea):
                 maxArea = area
 
-        return maxArea
+        # output Rect of Item
+        rect = None
+
+        return maxArea, rect
 
 
     def switchMode(self, mode = "PreMode"):
