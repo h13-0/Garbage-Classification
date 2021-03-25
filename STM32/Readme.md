@@ -41,7 +41,7 @@ Conveyor:${cmd}
 ```
 
 cmd分别有:
-Linux端发送: `Forward` `Back` `Stop`
+Linux端发送: `Forward` `Backward` `Stop`
 STM32端不发送任何消息
 
 

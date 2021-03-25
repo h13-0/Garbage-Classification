@@ -61,7 +61,7 @@ class Ui_MainWindow(object):
 "background-color: #EDEDED;")
         self.groupBox_3.setObjectName("groupBox_3")
         self.groupBox_4 = QtWidgets.QGroupBox(self.groupBox_3)
-        self.groupBox_4.setGeometry(QtCore.QRect(10, 20, 145, 235))
+        self.groupBox_4.setGeometry(QtCore.QRect(10, 265, 145, 235))
         self.groupBox_4.setStyleSheet("border-radius:8px;\n"
 "border:2px solid rgb(200,200,200);")
         self.groupBox_4.setAlignment(QtCore.Qt.AlignCenter)
@@ -109,7 +109,7 @@ class Ui_MainWindow(object):
         self.HarmfulNumbers.raise_()
         self.stackedWidget_Harmful.raise_()
         self.groupBox_6 = QtWidgets.QGroupBox(self.groupBox_3)
-        self.groupBox_6.setGeometry(QtCore.QRect(10, 265, 145, 235))
+        self.groupBox_6.setGeometry(QtCore.QRect(170, 20, 145, 235))
         self.groupBox_6.setStyleSheet("border-radius:8px;\n"
 "border:2px solid rgb(200,200,200);")
         self.groupBox_6.setAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignTop)
@@ -133,7 +133,7 @@ class Ui_MainWindow(object):
         self.OtherNumbers.raise_()
         self.stackedWidget_Other.raise_()
         self.groupBox_7 = QtWidgets.QGroupBox(self.groupBox_3)
-        self.groupBox_7.setGeometry(QtCore.QRect(170, 20, 145, 235))
+        self.groupBox_7.setGeometry(QtCore.QRect(10, 20, 145, 235))
         self.groupBox_7.setStyleSheet("border-radius:8px;\n"
 "border:2px solid rgb(200,200,200);")
         self.groupBox_7.setAlignment(QtCore.Qt.AlignCenter)
@@ -294,8 +294,8 @@ class Ui_MainWindow(object):
         self.ReRecord.setText(_translate("MainWindow", "重新录入"))
         self.ReadyToRecord.setText(_translate("MainWindow", "准备录入"))
         self.groupBox_12.setTitle(_translate("MainWindow", "模式切换"))
-        self.PreMode.setText(_translate("MainWindow", "初赛模式"))
-        self.FinalMode.setText(_translate("MainWindow", "决赛模式"))
+        self.PreMode.setText(_translate("MainWindow", "单一分类"))
+        self.FinalMode.setText(_translate("MainWindow", "复杂分类"))
         self.groupBox_10.setTitle(_translate("MainWindow", "图像功能区"))
         self.PlayVideo.setText(_translate("MainWindow", "播放视频"))
         self.PlayPhoto.setText(_translate("MainWindow", "播放图片"))

@@ -26,6 +26,8 @@ from Hardware.Slave import Slave
 # import Working mode definition
 from WorkingProcess.WorkingMode import Mode
 
+import cv2 as cv
+
 class Process(QWidget):
     # 结果输出用editText的信号槽
     __outputSignal__ = pyqtSignal([str])
@@ -69,10 +71,11 @@ class Process(QWidget):
         # Write your Code Here:
         self.__detector__.drawRect(True)
         self.__detector__.drawResult(True)
+        mask = cv.imread("./ImageProcessing/mask.png")
         while True:
             if(self.__functions__.getCurrentMode() == Mode['preMode']):
                 # 单分类模式
-                maxArea, rect = self.__detector__.hasObject(self.__detector__.getFrame())
+                maxArea, rect = self.__detector__.hasObject(self.__detector__.getPreprocessedFrame(mask))
                 if(maxArea < 1000):
                     self.__detector__.pause()
                     self.__videoPlayer__.resume()
@@ -86,9 +89,61 @@ class Process(QWidget):
 
                     name, classes, probability = self.__detector__.predict(self.__detector__.getFrame())
 
-                    self.__outputSignal__.emit(
-                        name + ", 是: " + classes + " " + probability
-                    )
+                    for i in range(3):
+                        tempname, classes, probability = self.__detector__.predict(self.__detector__.getFrame())
+                        if(not tempname == name):
+                            break
+                        if(i == 2):
+                            self.__outputSignal__.emit(
+                                name + ", 是: " + classes + " " + probability
+                            )
+
+                            if(classes == "有害垃圾"):
+                                self.__slave__.conveyorForward()
+                                startTime = time.time()
+                                
+                                while(time.time() - startTime < 3.5):
+                                    maxArea, rect = self.__detector__.hasObject(self.__detector__.getPreprocessedFrame(mask))
+                                    
+
+                                self.__slave__.sendHarmful()
+                                maxArea, rect = self.__detector__.hasObject(self.__detector__.getPreprocessedFrame(mask))
+                                #self.__garbageMessage__.
+
+                            elif(classes == "可回收垃圾"):
+                                self.__slave__.conveyorForward()
+                                startTime = time.time()
+                                
+                                while(time.time() - startTime < 3.5):
+                                    maxArea, rect = self.__detector__.hasObject(self.__detector__.getPreprocessedFrame(mask))
+
+                                self.__slave__.sendRecycle()
+                                maxArea, rect = self.__detector__.hasObject(self.__detector__.getPreprocessedFrame(mask))
+
+                            elif(classes == "其他垃圾"):
+                                self.__slave__.conveyorForward()
+                                startTime = time.time()
+                                
+                                while(time.time() - startTime < 3.5):
+                                    maxArea, rect = self.__detector__.hasObject(self.__detector__.getPreprocessedFrame(mask))
+
+                                self.__slave__.sendOther()
+                                maxArea, rect = self.__detector__.hasObject(self.__detector__.getPreprocessedFrame(mask))
+
+                            elif(classes == "厨余垃圾"):
+                                self.__slave__.conveyorForward()
+                                startTime = time.time()
+                                
+                                while(time.time() - startTime < 3.5):
+                                    maxArea, rect = self.__detector__.hasObject(self.__detector__.getPreprocessedFrame(mask))
+
+                                self.__slave__.sendKitchen()
+                                maxArea, rect = self.__detector__.hasObject(self.__detector__.getPreprocessedFrame(mask))
+
+                    self.__slave__.conveyorStop()
+
+
+                    
 
                     # Do sth.
                     
@@ -123,7 +178,10 @@ class Process(QWidget):
 
     # Detector加载完毕后执行以下内容
     def __detectorInited__(self):
+        # 初始化功能区面板
         self.__functions__ = Functions(self.__ui__, self.__videoPlayer__, self.__detector__)
+        # 初始化背景阈值Slider
+        self.__functions__.setThreSliderValue(self.thre)
 
         # 创建子线程
         self.__mainThread__ = threading.Thread(target=self.__main__)

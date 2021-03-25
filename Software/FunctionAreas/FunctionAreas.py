@@ -119,6 +119,13 @@ class Functions():
         self.__videoPlayer__.takeTurns()
 
     
+    # 设置阈值Slider当前值
+    def setThreSliderValue(self, value):
+        if((value >= 0) and (value <= 255)):
+            self.__ui__.threSlider.setValue(value)
+
+
+    # 阈值Slider触发函数
     def __threValueChanged__(self):
         self.__detector__.setThreValue(self.__ui__.threSlider.value())
 

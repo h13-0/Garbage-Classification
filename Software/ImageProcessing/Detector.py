@@ -38,6 +38,14 @@ class Detector(threading.Thread, QWidget):
         self.__rect__ = None
         self.__rectLock__ = threading.Lock()
 
+        # 目标的边缘
+        ## 选择是否绘出Contour
+        self.__drawContour__ = False
+        
+        ## 目标轮廓
+        self.__contour__ = None
+        self.__contourLock__ = threading.Lock()
+
         # label和种类信息
         self.__className__ = className
 
@@ -100,6 +108,7 @@ class Detector(threading.Thread, QWidget):
 
             # 获取是否需要画出方框
             ## TODO: 支持多方框
+            ## TODO: 使用完一次后即销毁
             rect = None
             with self.__rectLock__:
                 if(self.__drawRect__):
@@ -107,6 +116,7 @@ class Detector(threading.Thread, QWidget):
 
             # 获取是否需要画出结果
             ## TODO: 支持多结果
+            ## TODO: 使用完一次后即销毁
             nameResult = None
             probabilityResult = None
 
@@ -131,8 +141,8 @@ class Detector(threading.Thread, QWidget):
 
 
     # 预处理图像, 用黑色方块覆盖机械部分
-    def __preprocessImage__(self, img):
-        pass
+    def getPreprocessedFrame(self, mask):
+        return cv.bitwise_and(self.getFrame(), mask)
 
 
     # 将Frame左右分割
@@ -204,6 +214,12 @@ class Detector(threading.Thread, QWidget):
     def drawRect(self, value):
         with self.__rectLock__:
             self.__drawRect__ = value
+
+
+    # 选择是否绘制出边缘
+    ## 这样效果会和Yolo有很明显的区别
+    def drawContour(self, value):
+        pass
 
 
     # 选择是否在图像中标出结果

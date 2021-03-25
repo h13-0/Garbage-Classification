@@ -31,7 +31,7 @@ def main():
     if(platform.system()=='Windows'):
         parser.add_argument('--serial', type=str, default="COM3", help="Serial port")
     elif(platform.system()=='Linux'):
-        parser.add_argument('--serial', type=str, help="Serial port")
+        parser.add_argument('--serial', type=str, default="/dev/ttyTHS1", help="Serial port")
 
     parser.add_argument('--cam', type=int, default=0, help="Camrea ID")
     

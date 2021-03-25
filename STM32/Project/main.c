@@ -31,9 +31,9 @@ int main()
 
     //初始化Slider
     SliderInit();
-	
+
+		//初始化Conveyor
 		ConveyorInit();
-		ConveyorForward();
 	
     while(1)
     {
@@ -70,17 +70,14 @@ int main()
                                 //Baffle:Left:Open
                                 if(!strncmp(cmd, "Open", 4))
                                 {
-
                                     printf("Baffle:Left:Opened\r\n");
                                 }
 
                                 //Baffle:Left:Close
                                 else if(!strncmp(cmd, "Close", 5))
                                 {
-
                                     printf("Baffle:Left:Closed\r\n");
                                 }
-
                             }
                         }
                         //Baffle:Right:${cmd}
@@ -103,7 +100,6 @@ int main()
 
                                     printf("Baffle:Right:Closed\r\n");
                                 }
-
                             }
                         }
                         //Baffle:Middle:${cmd}
@@ -126,7 +122,6 @@ int main()
 
                                     printf("Baffle:Middle:Closed\r\n");
                                 }
-
                             }
                         }
                     }
@@ -136,7 +131,28 @@ int main()
                 //Conveyor:${cmd}
                 else if(!strncmp(key, "Conveyor", 8))
                 {
-
+										char *cmd = NULL;
+										cmd = strtok(NULL, ":");
+										if(cmd != NULL)
+										{
+												//Conveyor:Forward
+												if(!strncmp(cmd, "Forward", 7))
+												{
+														ConveyorForward();
+												}
+												
+												//Conveyor:Backward
+												else if(!strncmp(cmd, "Backward", 8))
+												{
+														ConveyorBackward();
+												}
+												
+												//Conveyor:Stop
+												else if(!strncmp(cmd, "Stop", 4))
+												{
+														ConveyorStop();
+												}
+										}
                 }
 
                 //放置垃圾命令

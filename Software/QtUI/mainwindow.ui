@@ -155,7 +155,7 @@ background-color: #EDEDED;</string>
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>20</y>
+       <y>265</y>
        <width>145</width>
        <height>235</height>
       </rect>
@@ -270,8 +270,8 @@ background-color: rgba(0, 0, 0, 0);</string>
     <widget class="QGroupBox" name="groupBox_6">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>265</y>
+       <x>170</x>
+       <y>20</y>
        <width>145</width>
        <height>235</height>
       </rect>
@@ -328,7 +328,7 @@ background-color: rgba(0, 0, 0, 0);</string>
     <widget class="QGroupBox" name="groupBox_7">
      <property name="geometry">
       <rect>
-       <x>170</x>
+       <x>10</x>
        <y>20</y>
        <width>145</width>
        <height>235</height>
@@ -612,7 +612,7 @@ border:2px solid rgb(200,200,200);</string>
        <string notr="true">background-color: #FEFEFE;</string>
       </property>
       <property name="text">
-       <string>初赛模式</string>
+       <string>单一分类</string>
       </property>
      </widget>
      <widget class="QPushButton" name="FinalMode">
@@ -628,7 +628,7 @@ border:2px solid rgb(200,200,200);</string>
        <string notr="true">background-color: #E4E4E4;</string>
       </property>
       <property name="text">
-       <string>决赛模式</string>
+       <string>复杂分类</string>
       </property>
      </widget>
     </widget>

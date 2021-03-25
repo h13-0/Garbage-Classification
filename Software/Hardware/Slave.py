@@ -110,6 +110,19 @@ class Slave():
         return self.__recycleLoad__, self.__kitchenLoad__, self.__harmfulLoad__, self.__otherLoad__
 
 
+    # 控制传送带运动
+    ## 传送带向前
+    def conveyorForward(self):
+        self.__usart__.write(("Conveyor:" + "Forward\r\n").encode("utf-8"))
+
+    ## 传送带向后
+    def conveyorBackward(self):
+        self.__usart__.write(("Conveyor:" + "Backward\r\n").encode("utf-8"))
+
+    ## 传送带停止
+    def conveyorStop(self):
+        self.__usart__.write(("Conveyor:" + "Stop\r\n").encode("utf-8"))
+
     # 托盘运送垃圾
     ## 懒得用阻塞了 直接等待就行
     def sendRecycle(self, timeout = 5):
@@ -133,8 +146,8 @@ class Slave():
         with self.__SliderOKLock__:
             self.isSliderOK = False
         
-        self.__usart__.write(("Slider:" + classes).encode("utf-8"))
-        while((time.time() - startTime < timeout*1000) or not self.isSliderOK):
+        self.__usart__.write(("Slider:" + classes + "\r\n").encode("utf-8"))
+        while((time.time() - startTime < timeout*1000) and not self.isSliderOK):
             time.sleep(0.1)
 
         with self.__SliderOKLock__:
@@ -151,9 +164,6 @@ class Slave():
     def closeBaffle(self, target, timeout):
         self.__usart__.write(("Baffle:" + target + "Close\r\n").encode("utf-8"))
         # wait
-
-    def conveyorForward(self):
-        self.__usart__.write(("Conveyor:" + "Forward\r\n").encode("utf-8"))
 
     def sliderSend(self, classes):
         self.__usart__.write(("Slider:" + classes + "\r\n").encode("utf-8"))
