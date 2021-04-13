@@ -4,7 +4,7 @@
 //Configs
 
 //限制最大步数, 也就是行程
-#define STEP_LIMIT 1500
+#define STEP_LIMIT 1500  //28cm
 
 #define SLIDER_DELAY 1000
 

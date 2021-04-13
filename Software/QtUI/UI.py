@@ -85,7 +85,7 @@ class Ui_MainWindow(object):
         self.RecycleNumbers.raise_()
         self.stackedWidget_Recycle.raise_()
         self.groupBox_5 = QtWidgets.QGroupBox(self.groupBox_3)
-        self.groupBox_5.setGeometry(QtCore.QRect(170, 265, 145, 235))
+        self.groupBox_5.setGeometry(QtCore.QRect(170, 20, 145, 235))
         self.groupBox_5.setStyleSheet("border-radius:8px;\n"
 "border:2px solid rgb(200,200,200);")
         self.groupBox_5.setAlignment(QtCore.Qt.AlignCenter)
@@ -109,7 +109,7 @@ class Ui_MainWindow(object):
         self.HarmfulNumbers.raise_()
         self.stackedWidget_Harmful.raise_()
         self.groupBox_6 = QtWidgets.QGroupBox(self.groupBox_3)
-        self.groupBox_6.setGeometry(QtCore.QRect(170, 20, 145, 235))
+        self.groupBox_6.setGeometry(QtCore.QRect(10, 20, 145, 235))
         self.groupBox_6.setStyleSheet("border-radius:8px;\n"
 "border:2px solid rgb(200,200,200);")
         self.groupBox_6.setAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignTop)
@@ -133,7 +133,7 @@ class Ui_MainWindow(object):
         self.OtherNumbers.raise_()
         self.stackedWidget_Other.raise_()
         self.groupBox_7 = QtWidgets.QGroupBox(self.groupBox_3)
-        self.groupBox_7.setGeometry(QtCore.QRect(10, 20, 145, 235))
+        self.groupBox_7.setGeometry(QtCore.QRect(170, 265, 145, 235))
         self.groupBox_7.setStyleSheet("border-radius:8px;\n"
 "border:2px solid rgb(200,200,200);")
         self.groupBox_7.setAlignment(QtCore.Qt.AlignCenter)

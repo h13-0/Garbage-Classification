@@ -62,7 +62,7 @@ void TIM3_Timer_Init(uint16_t arr,uint16_t psc)
 		TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
 		NVIC_InitTypeDef NVIC_InitStructure;
 
-		RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
+		RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE);
 
 		TIM_TimeBaseStructure.TIM_Period = arr; 										//设置在下一个更新事件装入活动的自动重装载寄存器周期的值
 		TIM_TimeBaseStructure.TIM_Prescaler = psc; 									//设置用来作为TIMx时钟频率除数的预分频值 

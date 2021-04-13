@@ -77,8 +77,6 @@ class Functions():
 
         self.__mode__ = Mode['finalMode']
 
-        self.__detector__.switchMode(self.__mode__)
-
 
     # 切换为视频播放模式
     def __playVideo__(self):

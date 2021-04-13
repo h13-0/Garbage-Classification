@@ -29,7 +29,7 @@ def main():
     # argparse
     parser = argparse.ArgumentParser()
     if(platform.system()=='Windows'):
-        parser.add_argument('--serial', type=str, default="COM3", help="Serial port")
+        parser.add_argument('--serial', type=str, default="COM5", help="Serial port")
     elif(platform.system()=='Linux'):
         parser.add_argument('--serial', type=str, default="/dev/ttyTHS1", help="Serial port")
 
@@ -45,7 +45,7 @@ def main():
 
 
     # process
-    process = Process(ui, args.cam, args.serial, args.thre, args.minArea)
+    process = Process(ui, args.cam, args.serial, args.thre, args.minArea, args.retry)
     
     sys.exit(app.exec_())
 

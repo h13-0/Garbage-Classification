@@ -337,7 +337,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F10X_MD,USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>..\Core;..\Project;..\Stm32F10x_FWLIB\inc;..\Hardware;..\Software\ANO_tc;..\Software\BLUEROCKER;..\Software\PID;..\Software\sys;..\Software\usart;..\Driver\Ultrasonic_Ranging;..\Software\SystemClock;..\Software\Bit_operation;..\Hardware\TIM;..\Driver\Stepper;..\Hardware\FreeIO;..\Driver\Slider;..\Driver\Conveyor</IncludePath>
+              <IncludePath>..\Core;..\Project;..\Stm32F10x_FWLIB\inc;..\Hardware;..\Software\ANO_tc;..\Software\BLUEROCKER;..\Software\PID;..\Software\sys;..\Software\usart;..\Driver\Ultrasonic_Ranging;..\Software\SystemClock;..\Software\Bit_operation;..\Hardware\TIM;..\Driver\Stepper;..\Hardware\FreeIO;..\Driver\Slider;..\Driver\Conveyor;..\Driver\CapacityDetector;..\Driver\Baffle</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -416,6 +416,16 @@
               <FileType>1</FileType>
               <FilePath>..\Driver\Conveyor\Conveyor.c</FilePath>
             </File>
+            <File>
+              <FileName>CapacityDetector.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Driver\CapacityDetector\CapacityDetector.c</FilePath>
+            </File>
+            <File>
+              <FileName>Baffle.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Driver\Baffle\Baffle.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -460,11 +470,6 @@
               <FileName>Commands.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Commands.c</FilePath>
-            </File>
-            <File>
-              <FileName>Timer3.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Timer3.c</FilePath>
             </File>
           </Files>
         </Group>

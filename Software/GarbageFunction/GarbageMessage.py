@@ -42,6 +42,12 @@ class GarbageMessage(QWidget):
         self.__ui__.LoadTest.clicked.connect(lambda:self.loadTest())
         self.__ui__.ClearNumbers.clicked.connect(lambda:self.clear())
 
+        # 垃圾数量统计
+        self.__recycleNumber__ = 0
+        self.__kitchenNumber__ = 0
+        self.__harmfulNumber__ = 0
+        self.__otherNumber__ = 0
+
         # 归零
         self.clear()
 
@@ -53,12 +59,40 @@ class GarbageMessage(QWidget):
 
     # 清零计数
     def clear(self):
-        print("clear")
+        self.__recycleNumber__ = 0
+        self.__kitchenNumber__ = 0
+        self.__harmfulNumber__ = 0
+        self.__otherNumber__ = 0
+
         self.__recycleNumberSignal__.emit(0)
         self.__kitchenNumberSignal__.emit(0)
         self.__harmfulNumberSignal__.emit(0)
         self.__otherNumberSignal__.emit(0)
 
+
+    def sum(self):
+        return self.__recycleNumber__ + self.__kitchenNumber__ + self.__harmfulNumber__ + self.__otherNumber__
+
+    # 增加垃圾数量
+    def newRecycle(self):
+        self.__recycleNumber__ += 1
+        return self.sum(), self.__recycleNumber__
+
+    
+    def newKitchen(self):
+        self.__kitchenNumber__ += 1
+        return self.sum(), self.__kitchenNumber__
+
+    
+    def newHarmful(self):
+        self.__harmfulNumber__ += 1
+        return self.sum(), self.__harmfulNumber__
+
+    
+    def newOther(self):
+        self.__otherNumber__ += 1
+        return self.sum(), self.__otherNumber__
+    
 
     # 设置slave
     def setSlave(self, slave):

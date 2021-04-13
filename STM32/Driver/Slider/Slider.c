@@ -43,19 +43,20 @@ void SliderReset()
 
 void RecyclableWaste()
 {
+		Stepper_Forward(&stepperSlider, 200, SLIDER_DELAY_PER_HALF_SETP);
 		SLIDER_SERVO_ROTATE(RIGHT_ANGLE);
 		delay_ms(SLIDER_DELAY);
 		SLIDER_SERVO_ROTATE(MIDDLE_ANGLE);
+		SliderReset();
 }
 
 void KitchenWaste()
 {
-		SLIDER_SERVO_ROTATE(MIDDLE_ANGLE);
-		Stepper_Forward(&stepperSlider, STEP_LIMIT, SLIDER_DELAY_PER_HALF_SETP);
-		SLIDER_SERVO_ROTATE(RIGHT_ANGLE);
+		Stepper_Forward(&stepperSlider, 200, SLIDER_DELAY_PER_HALF_SETP);
+		SLIDER_SERVO_ROTATE(LEFT_ANGLE);
 		delay_ms(SLIDER_DELAY);
 		SLIDER_SERVO_ROTATE(MIDDLE_ANGLE);
-		Stepper_Backward(&stepperSlider, STEP_LIMIT, SLIDER_DELAY_PER_HALF_SETP);
+		SliderReset();
 }
 
 void OtherWaste()
@@ -65,12 +66,15 @@ void OtherWaste()
 		SLIDER_SERVO_ROTATE(LEFT_ANGLE);
 		delay_ms(SLIDER_DELAY);
 		SLIDER_SERVO_ROTATE(MIDDLE_ANGLE);
-		Stepper_Backward(&stepperSlider, STEP_LIMIT, SLIDER_DELAY_PER_HALF_SETP);
+		SliderReset();
 }
 
 void HarmfulWaste()
 {
-		SLIDER_SERVO_ROTATE(LEFT_ANGLE);
+		SLIDER_SERVO_ROTATE(MIDDLE_ANGLE);
+		Stepper_Forward(&stepperSlider, STEP_LIMIT, SLIDER_DELAY_PER_HALF_SETP);
+		SLIDER_SERVO_ROTATE(RIGHT_ANGLE);
 		delay_ms(SLIDER_DELAY);
 		SLIDER_SERVO_ROTATE(MIDDLE_ANGLE);
+		SliderReset();
 }

@@ -45,19 +45,19 @@ class Slave():
                             
                             # 可回收垃圾
                             if(sp[1] == "Recycle"):
-                                self.__recycleLoad__ = int(sp[2])
+                                self.__recycleLoad__ = int(float(sp[2]))
 
                             # 厨余垃圾
                             elif(sp[1] == "Kitchen"):
-                                self.__kitchenLoad__ = int(sp[2])
+                                self.__kitchenLoad__ = int(float(sp[2]))
 
                             # 有害垃圾
                             elif(sp[1] == "Harmful"):
-                                self.__harmfulLoad__ = int(sp[2])
+                                self.__harmfulLoad__ = int(float(sp[2]))
 
                             # 其他垃圾
                             elif(sp[1] == "Other"):
-                                self.__otherLoad__ = int(sp[2])
+                                self.__otherLoad__ = int(float(sp[2]))
 
                 # 挡板事件
                 elif(sp[0] == 'Baffle'):
@@ -155,15 +155,14 @@ class Slave():
 
 
     # 开挡板
-    def openBaffle(self, target, timeout):
-        self.__usart__.write(("Baffle:" + target + "Open\r\n").encode("utf-8"))
-        # wait
+    def openBaffle(self, target):
+        self.__usart__.write(("Baffle:" + target + ":Open\r\n").encode("utf-8"))
 
     
     # 关挡板
-    def closeBaffle(self, target, timeout):
-        self.__usart__.write(("Baffle:" + target + "Close\r\n").encode("utf-8"))
-        # wait
+    def closeBaffle(self, target):
+        self.__usart__.write(("Baffle:" + target + ":Close\r\n").encode("utf-8"))
+
 
     def sliderSend(self, classes):
         self.__usart__.write(("Slider:" + classes + "\r\n").encode("utf-8"))

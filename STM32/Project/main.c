@@ -10,8 +10,9 @@
 #include "TIM_Init.h"
 #include "Slider.h"
 #include "USART1_IRQ.h"
-#include "Timer3.h"
+#include "CapacityDetector.h"
 #include "Conveyor.h"
+#include "Baffle.h"
 
 //#define STM32_PROJRCT_DEBUG
 
@@ -34,6 +35,12 @@ int main()
 
 		//初始化Conveyor
 		ConveyorInit();
+		
+		//关闭齿条
+		//Right_Baffle_Close();
+		Right_Baffle_Open();
+		//Left_Baffle_Close();
+		Left_Baffle_Open();
 	
     while(1)
     {
@@ -70,13 +77,16 @@ int main()
                                 //Baffle:Left:Open
                                 if(!strncmp(cmd, "Open", 4))
                                 {
-                                    printf("Baffle:Left:Opened\r\n");
+																		//垃圾keil 不加nop不管用
+																		__nop();
+																		Left_Baffle_Open();
                                 }
 
                                 //Baffle:Left:Close
                                 else if(!strncmp(cmd, "Close", 5))
                                 {
-                                    printf("Baffle:Left:Closed\r\n");
+																		__nop();
+																		Left_Baffle_Close();
                                 }
                             }
                         }
@@ -90,15 +100,15 @@ int main()
                                 //Baffle:Right:Open
                                 if(!strncmp(cmd, "Open", 4))
                                 {
-
-                                    printf("Baffle:Right:Opened\r\n");
+																		__nop();
+																		Right_Baffle_Open();
                                 }
 
                                 //Baffle:Left:Close
                                 else if(!strncmp(cmd, "Close", 5))
                                 {
-
-                                    printf("Baffle:Right:Closed\r\n");
+																		__nop();
+																		Right_Baffle_Close();
                                 }
                             }
                         }
@@ -193,6 +203,25 @@ int main()
                     }
                 }
             }
-        }
+        } else {
+						//没有指令的时候进行测距, 3秒执行一次, 12秒一轮回
+						static uint64_t time = 0;
+						//间隔调用超声波会无法获取数据, 很奇怪
+						CapacityDetector_Handler();
+						
+						if(Get_ms() - time > 3000)
+						{
+								time = Get_ms();
+								double rec = 0, kit = 0, oth = 0, harm = 0;
+								CapacityDetector_getValue(&rec, &kit, &oth, &harm);
+							
+								//计算剩余容量
+							
+								printf("Capacity:Recycle:%lf\r\n", rec);
+								printf("Capacity:Kitchen:%lf\r\n", kit);
+								printf("Capacity:Other:%lf\r\n", oth);
+								printf("Capacity:Harmful:%lf\r\n", harm);
+						}
+				}
     }
 }

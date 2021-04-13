@@ -219,7 +219,8 @@ class Detector(threading.Thread, QWidget):
     # 选择是否绘制出边缘
     ## 这样效果会和Yolo有很明显的区别
     def drawContour(self, value):
-        pass
+        with self.__contourLock__:
+            self.drawRect = value
 
 
     # 选择是否在图像中标出结果
@@ -247,6 +248,7 @@ class Detector(threading.Thread, QWidget):
     
 
     # 录入新的物体(模板匹配)
+    ## 省赛不需要 暂时不写
     def newObject(self):
         pass
 
