@@ -101,7 +101,7 @@ border:2px solid rgb(200,200,200);
      </property>
      <widget class="QTextEdit" name="textEdit">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -117,12 +117,15 @@ border:2px solid rgb(200,200,200);
         <stylestrategy>PreferAntialias</stylestrategy>
        </font>
       </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
       <property name="styleSheet">
        <string notr="true">border-radius:5px;
 background-color: rgb(255, 255, 255);</string>
       </property>
       <property name="verticalScrollBarPolicy">
-       <enum>Qt::ScrollBarAsNeeded</enum>
+       <enum>Qt::ScrollBarAlwaysOn</enum>
       </property>
       <property name="html">
        <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;

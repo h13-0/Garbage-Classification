@@ -37,72 +37,41 @@ class Slave():
             if(msg.find(":") > 1):
                 sp = msg.split(":")
 
-                # 垃圾桶容量信息
-                if(sp[0] == 'Capacity'):
-                    # 校验
-                    if(len(sp) == 3):
-                        with self.__loadLock__:
+                try:
+                    # 垃圾桶容量信息
+                    if(sp[0] == 'Capacity'):
+                        # 校验
+                        if(len(sp) == 3):
+                            with self.__loadLock__:
                             
-                            # 可回收垃圾
-                            if(sp[1] == "Recycle"):
-                                self.__recycleLoad__ = int(float(sp[2]))
+                                # 可回收垃圾
+                                if(sp[1] == "Recycle"):
+                                    self.__recycleLoad__ = int(float(sp[2]))
 
-                            # 厨余垃圾
-                            elif(sp[1] == "Kitchen"):
-                                self.__kitchenLoad__ = int(float(sp[2]))
+                                # 厨余垃圾
+                                elif(sp[1] == "Kitchen"):
+                                    self.__kitchenLoad__ = int(float(sp[2]))
 
-                            # 有害垃圾
-                            elif(sp[1] == "Harmful"):
-                                self.__harmfulLoad__ = int(float(sp[2]))
+                                # 有害垃圾
+                                elif(sp[1] == "Harmful"):
+                                    self.__harmfulLoad__ = int(float(sp[2]))
 
-                            # 其他垃圾
-                            elif(sp[1] == "Other"):
-                                self.__otherLoad__ = int(float(sp[2]))
+                                # 其他垃圾
+                                elif(sp[1] == "Other"):
+                                    self.__otherLoad__ = int(float(sp[2]))
 
-                # 挡板事件
-                elif(sp[0] == 'Baffle'):
-                    # 校验
-                    if(len(sp) == 3):
-                        # 左侧挡板
-                        if(sp[1] == 'Left'):
-                            if(sp[2] == 'Opened'):
-                                # Do someting
+                    # 滑块事件
+                    elif(sp[0] == 'Slider'):
+                        # 校验
+                        if(len(sp) == 2):
+                            if(sp[1] == 'OK'):
+                                # Do someThing
+                                with self.__SliderOKLock__:
+                                    self.isSliderOK = True
                                 pass
 
-                            elif(sp[2] == 'Closed'):
-                                # Do something
+                except Exception as e:
                                 pass
-
-                        
-                        # 右侧挡板
-                        elif(sp[1] == 'Right'):
-                            if(sp[2] == 'Opened'):
-                                # Do someting
-                                pass
-
-                            elif(sp[2] == 'Closed'):
-                                # Do something
-                                pass
-
-                        # 终端挡板
-                        elif(sp[1] == 'Middle'):
-                            if(sp[2] == 'Opened'):
-                                # Do someting
-                                pass
-
-                            elif(sp[2] == 'Closed'):
-                                # Do something
-                                pass
-
-                # 滑块事件
-                elif(sp[0] == 'Slider'):
-                    # 校验
-                    if(len(sp) == 2):
-                        if(sp[1] == 'OK'):
-                            # Do someThing
-                            with self.__SliderOKLock__:
-                                self.isSliderOK = True
-                            pass
 
 
     # 返回容量信息
@@ -163,6 +132,15 @@ class Slave():
     def closeBaffle(self, target):
         self.__usart__.write(("Baffle:" + target + ":Close\r\n").encode("utf-8"))
 
+
+    # 开始摇动中置隔板
+    def shakeMiddleBaffle(self):
+        self.__usart__.write(("Baffle:Middle:Shake\r\n").encode("utf-8"))
+
+
+    # 停止摇动中置隔板
+    def stopShakeMiddleBaffle(self):
+        self.__usart__.write(("Baffle:Middle:Stop\r\n").encode("utf-8"))
 
     def sliderSend(self, classes):
         self.__usart__.write(("Slider:" + classes + "\r\n").encode("utf-8"))

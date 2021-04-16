@@ -18,9 +18,15 @@
 //Servo
 //#define SLIDER_SERVO_INIT() 
 #define SLIDER_SERVO_ROTATE(angle) TIM_SetCompare1(TIM4, angle)
-#define LEFT_ANGLE   100
+
+#define LEFT_ANGLE       245
+#define LEFT_SHAKE_ANGLE 220
+
 #define MIDDLE_ANGLE 160
-#define RIGHT_ANGLE  220
+
+#define RIGHT_ANGLE  			75
+#define RIGHT_SHAKE_ANGLE 100
+
 
 //Limit sensor
 #define LIMIT_SENSOR_RCC_ENABLE() RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE)

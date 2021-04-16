@@ -234,6 +234,7 @@ class Detector(threading.Thread, QWidget):
     def predict(self, frame):
         frame = ResizeTo(frame, 299)
         frame = frame.astype(np.float32) / 255.0
+        frame = image.img_to_array(cv.cvtColor(frame, cv.COLOR_BGR2RGB))
         imgList = []
         imgList.append(frame)
         imgs = np.array(imgList)

@@ -421,11 +421,6 @@
               <FileType>1</FileType>
               <FilePath>..\Driver\CapacityDetector\CapacityDetector.c</FilePath>
             </File>
-            <File>
-              <FileName>Baffle.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Driver\Baffle\Baffle.c</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>

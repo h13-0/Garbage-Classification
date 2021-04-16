@@ -33,12 +33,12 @@ double Get_Distance_Value(Ultrasonic_TypeDef* ultrasonic)
 		delay_us(20);
 		GPIO_ResetBits(ultrasonic -> Trig_Port, ultrasonic -> Trig_Pin);
 		
-		volatile uint64_t StartTime = Get_us();
+		volatile uint64_t StartTime = Get_ms();
 		
 		//等待模块内部产生高电平
 		while(GPIO_ReadInputDataBit(ultrasonic -> Echo_Port, ultrasonic -> Echo_Pin) != Bit_SET)
 		{
-				if((Get_us() - StartTime) >= 1500)
+				if((Get_ms() - StartTime) >= 10)
 					return -1;
 		}
 	

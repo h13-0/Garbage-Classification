@@ -64,8 +64,6 @@ class Functions():
 
         self.__mode__ = Mode['preMode']
 
-        self.__detector__.switchMode(self.__mode__)
-
 
     # 切换为决赛模式
     def __finalMode__(self):

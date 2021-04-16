@@ -16,6 +16,9 @@
 
 //#define STM32_PROJRCT_DEBUG
 
+//是否震动中置挡板
+static uint8_t middleShake = 0;
+
 int main()
 {
     //初始化Systick系统时钟
@@ -26,22 +29,32 @@ int main()
 
     //由于TIM4是多个组件共用的, 所以先初始化TIM4
     TIM4_PWM_Init(1999, 719);
-	
-		//初始化容量检测器
-		CapacityDetectorInit();
+
+    //初始化容量检测器
+    CapacityDetectorInit();
 
     //初始化Slider
     SliderInit();
 
-		//初始化Conveyor
-		ConveyorInit();
-		
-		//关闭齿条
-		//Right_Baffle_Close();
-		Right_Baffle_Open();
-		//Left_Baffle_Close();
-		Left_Baffle_Open();
-	
+    //初始化Conveyor
+    ConveyorInit();
+
+    //关闭齿条
+    //Right_Baffle_Close();
+    Right_Baffle_Open();
+    //Left_Baffle_Close();
+    Left_Baffle_Open();
+    Middle_Baffle_Rotate(150);
+    /*
+    		while(1)
+    		{
+
+    				delay_ms(500);
+    				Middle_Baffle_Rotate(220);
+    				delay_ms(500);
+    		}
+    */
+
     while(1)
     {
         uint8_t buf[USART1_BUF_LEN];
@@ -77,16 +90,16 @@ int main()
                                 //Baffle:Left:Open
                                 if(!strncmp(cmd, "Open", 4))
                                 {
-																		//垃圾keil 不加nop不管用
-																		__nop();
-																		Left_Baffle_Open();
+                                    //垃圾keil 不加nop不管用
+                                    __nop();
+                                    Left_Baffle_Open();
                                 }
 
                                 //Baffle:Left:Close
                                 else if(!strncmp(cmd, "Close", 5))
                                 {
-																		__nop();
-																		Left_Baffle_Close();
+                                    __nop();
+                                    Left_Baffle_Close();
                                 }
                             }
                         }
@@ -100,15 +113,15 @@ int main()
                                 //Baffle:Right:Open
                                 if(!strncmp(cmd, "Open", 4))
                                 {
-																		__nop();
-																		Right_Baffle_Open();
+                                    __nop();
+                                    Right_Baffle_Open();
                                 }
 
                                 //Baffle:Left:Close
                                 else if(!strncmp(cmd, "Close", 5))
                                 {
-																		__nop();
-																		Right_Baffle_Close();
+                                    __nop();
+                                    Right_Baffle_Close();
                                 }
                             }
                         }
@@ -120,18 +133,17 @@ int main()
                             if(cmd != NULL)
                             {
                                 //Baffle:Middle:Open
-                                if(!strncmp(cmd, "Open", 4))
+                                if(!strncmp(cmd, "Shake", 5))
                                 {
-
-                                    printf("Baffle:Middle:Opened\r\n");
+																		middleShake = 1;
                                 }
 
                                 //Baffle:Left:Close
-                                else if(!strncmp(cmd, "Close", 5))
+                                else if(!strncmp(cmd, "Stop", 4))
                                 {
-
-                                    printf("Baffle:Middle:Closed\r\n");
-                                }
+																		middleShake = 0;
+																		Middle_Baffle_Rotate(150);
+																}
                             }
                         }
                     }
@@ -141,28 +153,28 @@ int main()
                 //Conveyor:${cmd}
                 else if(!strncmp(key, "Conveyor", 8))
                 {
-										char *cmd = NULL;
-										cmd = strtok(NULL, ":");
-										if(cmd != NULL)
-										{
-												//Conveyor:Forward
-												if(!strncmp(cmd, "Forward", 7))
-												{
-														ConveyorForward();
-												}
-												
-												//Conveyor:Backward
-												else if(!strncmp(cmd, "Backward", 8))
-												{
-														ConveyorBackward();
-												}
-												
-												//Conveyor:Stop
-												else if(!strncmp(cmd, "Stop", 4))
-												{
-														ConveyorStop();
-												}
-										}
+                    char *cmd = NULL;
+                    cmd = strtok(NULL, ":");
+                    if(cmd != NULL)
+                    {
+                        //Conveyor:Forward
+                        if(!strncmp(cmd, "Forward", 7))
+                        {
+                            ConveyorForward();
+                        }
+
+                        //Conveyor:Backward
+                        else if(!strncmp(cmd, "Backward", 8))
+                        {
+                            ConveyorBackward();
+                        }
+
+                        //Conveyor:Stop
+                        else if(!strncmp(cmd, "Stop", 4))
+                        {
+                            ConveyorStop();
+                        }
+                    }
                 }
 
                 //放置垃圾命令
@@ -204,24 +216,37 @@ int main()
                 }
             }
         } else {
-						//没有指令的时候进行测距, 3秒执行一次, 12秒一轮回
-						static uint64_t time = 0;
-						//间隔调用超声波会无法获取数据, 很奇怪
-						CapacityDetector_Handler();
-						
-						if(Get_ms() - time > 3000)
-						{
-								time = Get_ms();
-								double rec = 0, kit = 0, oth = 0, harm = 0;
-								CapacityDetector_getValue(&rec, &kit, &oth, &harm);
-							
-								//计算剩余容量
-							
-								printf("Capacity:Recycle:%lf\r\n", rec);
-								printf("Capacity:Kitchen:%lf\r\n", kit);
-								printf("Capacity:Other:%lf\r\n", oth);
-								printf("Capacity:Harmful:%lf\r\n", harm);
-						}
-				}
+            //没有指令的时候进行测距, 3秒执行一次, 12秒一轮回
+            static uint64_t lastDetectTime = 0;
+						static uint64_t lastShakeTime = 0;
+            CapacityDetector_Handler();
+
+            if(Get_ms() - lastDetectTime > 3000)
+            {
+                lastDetectTime = Get_ms();
+                double rec = 0, kit = 0, oth = 0, harm = 0;
+                CapacityDetector_getValue(&rec, &kit, &oth, &harm);
+
+                //计算剩余容量
+
+                printf("Capacity:Recycle:%lf\r\n", rec);
+                printf("Capacity:Kitchen:%lf\r\n", kit);
+                printf("Capacity:Other:%lf\r\n", oth);
+                printf("Capacity:Harmful:%lf\r\n", harm);
+            }
+
+            if(middleShake)
+            {
+                //一秒一次
+								if(Get_ms() - lastShakeTime > 1000)
+								{
+										Middle_Baffle_Rotate(80);
+										lastShakeTime = Get_ms();
+								} else if(Get_ms() - lastShakeTime > 500)
+								{
+										Middle_Baffle_Rotate(220);
+								}
+            }
+        }
     }
 }

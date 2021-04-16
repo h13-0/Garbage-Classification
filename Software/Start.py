@@ -35,9 +35,9 @@ def main():
 
     parser.add_argument('--cam', type=int, default=0, help="Camrea ID")
     
-    parser.add_argument('--thre', type=int, default=100, help="threshold Value")
+    parser.add_argument('--thre', type=int, default=170, help="threshold Value")
 
-    parser.add_argument('--minArea', type=int, default=50, help="Minimum Area Of Object")
+    parser.add_argument('--minArea', type=int, default=20, help="Minimum Area Of Object")
 
     parser.add_argument('--retry', type=int, default=5, help="Maximum number of attempts")
 

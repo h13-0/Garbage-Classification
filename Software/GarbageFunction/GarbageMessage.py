@@ -21,17 +21,18 @@ class GarbageMessage(QWidget):
         self.__slaveLock__ = threading.Lock()
 
         # 显示动画
+        self.__ui__.processbar_other.parameterUpdate(100)
+        self.__ui__.processbar_other.parameterUpdate(0)
+
+        self.__ui__.processbar_harmful.parameterUpdate(100)
+        self.__ui__.processbar_harmful.parameterUpdate(0)
+
         self.__ui__.processbar_recycle.parameterUpdate(100)
         self.__ui__.processbar_recycle.parameterUpdate(0)
 
         self.__ui__.processbar_kitchen.parameterUpdate(100)
         self.__ui__.processbar_kitchen.parameterUpdate(0)
 
-        self.__ui__.processbar_harmful.parameterUpdate(100)
-        self.__ui__.processbar_harmful.parameterUpdate(0)
-
-        self.__ui__.processbar_other.parameterUpdate(100)
-        self.__ui__.processbar_other.parameterUpdate(0)
 
         # 连接信号
         self.__recycleNumberSignal__.connect(self.__ui__.setRecycleNumber)
@@ -39,7 +40,7 @@ class GarbageMessage(QWidget):
         self.__harmfulNumberSignal__.connect(self.__ui__.setHarmfulNumber)
         self.__otherNumberSignal__.connect(self.__ui__.setOtherNumber)
 
-        self.__ui__.LoadTest.clicked.connect(lambda:self.loadTest())
+        self.__ui__.LoadTest.clicked.connect(lambda:self.__loadFlash__())
         self.__ui__.ClearNumbers.clicked.connect(lambda:self.clear())
 
         # 垃圾数量统计
@@ -73,24 +74,29 @@ class GarbageMessage(QWidget):
     def sum(self):
         return self.__recycleNumber__ + self.__kitchenNumber__ + self.__harmfulNumber__ + self.__otherNumber__
 
+
     # 增加垃圾数量
     def newRecycle(self):
         self.__recycleNumber__ += 1
+        self.__recycleNumberSignal__.emit(self.__recycleNumber__)
         return self.sum(), self.__recycleNumber__
 
     
     def newKitchen(self):
         self.__kitchenNumber__ += 1
+        self.__kitchenNumberSignal__.emit(self.__kitchenNumber__)
         return self.sum(), self.__kitchenNumber__
 
     
     def newHarmful(self):
         self.__harmfulNumber__ += 1
+        self.__harmfulNumberSignal__.emit(self.__harmfulNumber__)
         return self.sum(), self.__harmfulNumber__
 
     
     def newOther(self):
         self.__otherNumber__ += 1
+        self.__otherNumberSignal__.emit(self.__otherNumber__)
         return self.sum(), self.__otherNumber__
     
 

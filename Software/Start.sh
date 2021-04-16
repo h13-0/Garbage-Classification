@@ -1,1 +1,1 @@
-python3 ./Start.py
+python3 ./Start.py > log

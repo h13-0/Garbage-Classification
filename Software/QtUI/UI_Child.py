@@ -2,6 +2,7 @@ from QtUI import UI
 from QtUI.ProcessBar import RoundProgress
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QWidget
+from PyQt5.QtGui import QTextCursor
 
 
 class Ui_Main(UI.Ui_MainWindow, QWidget):
@@ -30,6 +31,7 @@ class Ui_Main(UI.Ui_MainWindow, QWidget):
 
     def outputResult(self, result):
         self.textEdit.setText(result)
+        self.textEdit.moveCursor(QTextCursor.End)
 
 
     def setRecycleNumber(self, number):

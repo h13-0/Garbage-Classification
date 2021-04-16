@@ -7,6 +7,8 @@
 #include "usart.h"
 #include "Ultrasonic_Ranging.h"
 
+//#define STM32_PROJRCT_DEBUG
+
 static uint8_t times = 0;
 volatile static double RecycleSum = 0, KitchenSum = 0, HarmfulSum = 0, OtherSum = 0;
 volatile static uint32_t recTimes = 0, kitTimes = 0, harmTimes = 0, othTimes = 0;
@@ -17,17 +19,17 @@ Ultrasonic_TypeDef RecUltra, KitUltra, HarmUltra, OthUltra;
 //ÆäËûÀ¬»ø: 543 ~ 250
 //ÓÐº¦À¬»ø: 370 ~ 240
 
-#define RecMax 490
-#define RecMin 410
+#define RecMax 320
+#define RecMin 135
 
-#define KitMax 550
-#define KitMin 250
+#define KitMax 350
+#define KitMin 95
 
-#define OthMax 543
-#define OthMin 250
+#define OthMax 320
+#define OthMin 100
 
-#define HarmMax 370
-#define HarmMin 240
+#define HarmMax 185
+#define HarmMin 60
 
 void CapacityDetectorInit()
 {
@@ -53,15 +55,16 @@ void CapacityDetector_Handler()
 				double recTemp = Get_Distance_Value(&RecUltra);
 				if(recTemp > 0)
 				{
+					/*
+						if(recTemp > RecMax)
+								recTemp = RecMax;
+				
+						if(recTemp < RecMin)
+								recTemp = RecMin;
+					*/
 						RecycleSum += recTemp;
 						recTimes ++;
 				}
-				
-				if(recTemp > RecMax)
-					recTemp = RecMax;
-				
-				if(recTemp < RecMin)
-					recTemp = RecMin;
 				
 				times ++;
 		}
@@ -136,13 +139,14 @@ void CapacityDetector_getValue(double *rec, double *kit, double *oth, double *ha
 		harmTimes = 0;
 		HarmfulSum = 0;
 	
-		
-		printf("%lf\r\n", (double)(*rec));
+#ifdef STM32_PROJRCT_DEBUG
+		printf("rec: %lf\r\n", *rec);
+		printf("kit: %lf\r\n", *kit);
+		printf("oth: %lf\r\n", *oth);
+	printf("harm: %lf\r\n", *harm);
+#endif
 		*rec = getAvailable(rec, RecMax, RecMin);
-		printf("%lf\r\n", (double)(*kit));
-		*kit = getAvailable(kit, 460, 242);
-		printf("%lf\r\n", (double)(*oth));
-		*oth = getAvailable(oth, 543, 250);
-		printf("%lf\r\n", (double)(*harm));
-		*harm = getAvailable(harm, 370, 240);
+		*kit = getAvailable(kit, KitMax, KitMin);
+		*oth = getAvailable(oth, OthMax, OthMin);
+		*harm = getAvailable(harm, HarmMax, HarmMin);
 }
